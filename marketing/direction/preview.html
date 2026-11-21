@@ -1,0 +1,57 @@
+<!doctype html><meta charset=utf-8><title>Direction preview</title>
+<style>
+:root{--canvas:#F6F4F0;--ink:#17161B;--ink2:#5A5861;--accent:#4A3FD1;--onacc:#fff;--keep:#12803F;--del:#C8202F;--fav:#1B62D6;--undo:#A35C00;--surface:#fff}
+@media (prefers-color-scheme:dark){:root.auto{--canvas:#0C0C0F;--ink:#F5F4F8;--ink2:#A9A7B2;--accent:#A8A2FF;--onacc:#0C0C0F;--keep:#3DDC84;--del:#FF6B72;--fav:#5AA2FF;--undo:#FFB84D}}
+body{margin:0;background:#d9d6d0;font-family:-apple-system,"SF Pro Text",system-ui,sans-serif;display:flex;gap:40px;padding:40px;justify-content:center}
+.dark{--canvas:#0C0C0F;--ink:#F5F4F8;--ink2:#A9A7B2;--accent:#A8A2FF;--onacc:#0C0C0F;--keep:#3DDC84;--del:#FF6B72;--fav:#5AA2FF;--undo:#FFB84D;--surface:#1B1B20}
+.phone{width:393px;height:852px;background:var(--canvas);border-radius:55px;position:relative;overflow:hidden;color:var(--ink);box-shadow:0 20px 60px #0004;font-family:ui-rounded,"SF Pro Rounded",-apple-system,sans-serif}
+.glass{background:rgba(255,255,255,.55);backdrop-filter:blur(20px) saturate(1.6);border:.5px solid rgba(0,0,0,.1);box-shadow:0 2px 8px #0001}
+.dark .glass{background:rgba(60,60,70,.5);border-color:#fff2}
+.top{position:absolute;top:62px;left:16px;right:16px;display:flex;justify-content:space-between;align-items:center}
+.circ{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-size:18px}
+.cnt{height:36px;padding:0 14px;border-radius:18px;display:flex;align-items:center;font-weight:600;font-size:15px;gap:5px}
+.cnt span{color:var(--ink2);font-weight:500}
+.pill{height:44px;border-radius:22px;padding:0 16px;display:flex;align-items:center;gap:8px;font-weight:600;font-size:15px}
+.card{position:absolute;left:12px;right:12px;top:118px;bottom:150px;border-radius:36px;overflow:hidden;box-shadow:0 10px 24px #0003;transform:rotate(3deg) translateX(14px);
+background:linear-gradient(#FFC48A,#FF8FA3 55%,#8C7BFF)}
+.card:before{content:"";position:absolute;width:130px;height:130px;border-radius:50%;background:#FFF1C9;right:70px;top:230px}
+.card:after{content:"";position:absolute;left:-90px;right:-120px;bottom:-190px;height:420px;border-radius:50%;background:#4B3FA8;box-shadow:140px 90px 0 60px #2A2278}
+.next{position:absolute;left:12px;right:12px;top:132px;bottom:150px;border-radius:36px;transform:scale(.94);background:linear-gradient(#9EE3FF,#6FB5FF 60%,#5A7CFF);opacity:1;overflow:hidden}
+.stamp{position:absolute;z-index:3;left:28px;top:28px;padding:8px 16px;border-radius:14px;border:4px solid var(--keepf,#12803F);background:#12803F;color:#fff;font-weight:800;font-size:22px;letter-spacing:1.5px;transform:rotate(-12deg);box-shadow:0 2px 8px #0004}
+.scrim{position:absolute;z-index:2;left:0;right:0;bottom:0;height:140px;background:linear-gradient(transparent,rgba(0,0,0,.55));color:#fff;padding:0 16px 18px;display:flex;flex-direction:column;justify-content:flex-end}
+.scrim b{font-size:15px;font-family:-apple-system}.scrim i{font-style:normal;font-size:13px;opacity:.85;font-weight:500}
+.bar{position:absolute;bottom:44px;left:0;right:0;display:flex;justify-content:center;align-items:center;gap:16px}
+.btn{border-radius:50%;display:grid;place-items:center;font-size:26px;font-weight:700}
+.b56{width:56px;height:56px;font-size:21px}.b72{width:72px;height:72px;font-size:32px}
+.home{position:absolute;bottom:8px;left:50%;width:134px;height:5px;margin-left:-67px;border-radius:3px;background:var(--ink);opacity:.9}
+h1{font-size:34px;line-height:1.1;text-align:center;margin:0 36px 14px}
+p{font-size:17px;color:var(--ink2);text-align:center;margin:0 40px;line-height:1.4;font-family:-apple-system}
+.cta{position:absolute;bottom:60px;left:24px;right:24px;height:56px;border-radius:28px;background:var(--accent);color:var(--onacc);display:grid;place-items:center;font-weight:600;font-size:17px}
+.demo{position:absolute;top:130px;left:0;right:0;height:360px}
+.demo .c{position:absolute;left:76px;width:240px;height:320px;border-radius:36px;overflow:hidden;box-shadow:0 10px 24px #0003}
+.cap{position:absolute;top:510px;left:0;right:0;text-align:center;font-weight:600;color:var(--keep);font-size:15px}
+.dots{position:absolute;bottom:34px;left:0;right:0;display:flex;justify-content:center;gap:8px}.dots u{width:7px;height:7px;border-radius:50%;background:var(--ink2);opacity:.4}.dots u:first-child{opacity:1;background:var(--ink)}
+</style>
+<body>
+<div class=phone id=swipe>
+ <div class=top><div class="circ glass">⚙︎</div><div class="cnt glass">128 <span>of 4,210</span></div><div class="pill glass">🗑 12 · 340 MB</div></div>
+ <div class=next></div>
+ <div class=card><div class=stamp>KEEP</div><div class=scrim><b>Mar 14, 2025</b><i>4.2 MB</i></div></div>
+ <div class=bar>
+  <div class="btn b56 glass" style="color:var(--undo)">↶</div>
+  <div class="btn b72 glass" style="color:var(--del)">✕</div>
+  <div class="btn b56 glass" style="color:var(--fav)">★</div>
+  <div class="btn b72 glass" style="color:var(--keep)">✓</div>
+ </div><div class=home></div>
+</div>
+<div class="phone dark" id=onb>
+ <div class=demo>
+  <div class=c style="top:20px;transform:scale(.94);background:linear-gradient(#9EE3FF,#6FB5FF,#5A7CFF)"></div>
+  <div class=c style="top:0;transform:translateX(34px) rotate(8deg);background:linear-gradient(#FFC48A,#FF8FA3 55%,#8C7BFF)"><div class=stamp style="left:16px;top:20px;font-size:18px">KEEP</div></div>
+ </div>
+ <div class=cap>✓ Right: keep</div>
+ <div style="position:absolute;top:570px;left:0;right:0"><h1>Swipe to decide</h1><p>Right keeps. Left sends it to the trash pile. Up keeps and favorites.</p></div>
+ <div class=dots><u></u><u></u><u></u></div>
+ <div class=cta>Next</div><div class=home></div>
+</div>
+</body>
