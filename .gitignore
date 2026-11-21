@@ -17,3 +17,4 @@ node_modules/
 *.p8
 .env*
 .playwright-mcp/
+marketing/screenshots/raw/

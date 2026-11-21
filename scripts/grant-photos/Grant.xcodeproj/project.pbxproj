@@ -1,0 +1,19 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1; classes = {}; objectVersion = 56;
+	objects = {
+		A1 = {isa = PBXBuildFile; fileRef = A2;};
+		A2 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrantUITests/Grant.swift; sourceTree = "<group>";};
+		A3 = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = GrantUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR;};
+		A4 = {isa = PBXGroup; children = (A2, A5); sourceTree = "<group>";};
+		A5 = {isa = PBXGroup; children = (A3); name = Products; sourceTree = "<group>";};
+		A6 = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (A1); runOnlyForDeploymentPostprocessing = 0;};
+		A7 = {isa = PBXNativeTarget; buildConfigurationList = A8; buildPhases = (A6); buildRules = (); dependencies = (); name = GrantUITests; productName = GrantUITests; productReference = A3; productType = "com.apple.product-type.bundle.ui-testing";};
+		A8 = {isa = XCConfigurationList; buildConfigurations = (A9); defaultConfigurationName = Debug;};
+		A9 = {isa = XCBuildConfiguration; name = Debug; buildSettings = {SDKROOT = iphoneos; IPHONEOS_DEPLOYMENT_TARGET = 17.0; PRODUCT_NAME = "$(TARGET_NAME)"; PRODUCT_BUNDLE_IDENTIFIER = grant.uitests; GENERATE_INFOPLIST_FILE = YES; SWIFT_VERSION = 5.0; CODE_SIGNING_ALLOWED = NO; TEST_TARGET_NAME = "";};};
+		B1 = {isa = PBXProject; buildConfigurationList = B2; compatibilityVersion = "Xcode 14.0"; mainGroup = A4; productRefGroup = A5; projectDirPath = ""; projectRoot = ""; targets = (A7);};
+		B2 = {isa = XCConfigurationList; buildConfigurations = (B3); defaultConfigurationName = Debug;};
+		B3 = {isa = XCBuildConfiguration; name = Debug; buildSettings = {};};
+	};
+	rootObject = B1;
+}

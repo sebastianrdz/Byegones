@@ -12,7 +12,7 @@ SIM_NAME="${SIM_NAME:-iPhone 17 Pro Max}"
 SETTLE="${SETTLE:-2}"
 DERIVED="build/wp8"
 OUT="marketing/screenshots/raw"
-SCENES=(onboarding swipe keep favorite trash celebration)
+SCENES=(onboarding swipe keep favorite undo trash celebration)
 
 UDID="$(xcrun simctl list devices available | awk -v n="$SIM_NAME" 'index($0, n " (") {match($0, /[0-9A-F]{8}-[0-9A-F-]{27}/); print substr($0, RSTART, RLENGTH); exit}')"
 [[ -n "$UDID" ]] || { echo "Simulator '$SIM_NAME' not found" >&2; exit 1; }
@@ -41,10 +41,17 @@ if [[ -z "${PHOTO_DIR:-}" ]]; then
 fi
 find "$PHOTOS" -type f \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.heic' \) -print0 | xargs -0 xcrun simctl addmedia "$UDID"
 
-echo "== Install and grant Photos =="
+echo "== Install and grant Photos access =="
 xcrun simctl terminate "$UDID" "$BUNDLE_ID" 2>/dev/null || true
 xcrun simctl install "$UDID" "$APP"
-xcrun simctl privacy "$UDID" grant photos "$BUNDLE_ID"
+# simctl privacy grant is unreliable for the iOS 26 Photos prompt (the system alert still appears),
+# so a tiny standalone UI test taps "Allow Full Access" once. It lives in scripts/grant-photos and
+# is not part of the app project. Parallel testing is off because clones lose the permission.
+xcrun simctl privacy "$UDID" reset photos "$BUNDLE_ID" || true
+TEST_RUNNER_BUNDLE_ID="$BUNDLE_ID" xcodebuild test -project scripts/grant-photos/Grant.xcodeproj -scheme GrantUITests \
+  -destination "platform=iOS Simulator,id=$UDID" -derivedDataPath build/wp8-grant \
+  -parallel-testing-enabled NO -quiet >/dev/null
+xcrun simctl terminate "$UDID" "$BUNDLE_ID" 2>/dev/null || true
 
 capture() { # lang scene n outname [locale-args...]
   local lang="$1" scene="$2" file="$3"; shift 3
