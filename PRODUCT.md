@@ -1,0 +1,53 @@
+# Product
+
+<!-- impeccable:product-schema 1 -->
+
+## Platform
+
+ios
+
+## Stack
+Native SwiftUI, single iPhone target, iOS 17+ deployment (Liquid Glass on iOS 26 with material fallback), Swift 6, no third-party dependencies. Companion static website (HTML/CSS) on Vercel for landing, privacy policy and support pages.
+
+## Users
+People whose iPhone storage is full of photos and videos they never look at. They want to clean up their camera roll quickly, often in short idle moments (commute, couch), one-handed. The first user is the app's creator, cleaning up their own camera roll; the public App Store audience is the same job at scale.
+
+## Product Purpose
+Make reviewing a camera roll fast enough that people actually do it: one item at a time, one swipe per decision. Success means storage freed, measured in MB/GB, with no fear of deleting the wrong thing.
+
+## Positioning
+- Tinder-style swiping: left = delete, right = keep, up/★ = keep + Favorite in Photos, undo to go back.
+- Deletes are batched into one trash pile and confirmed once (iOS forces a system confirmation per delete call; batching turns that into a single confirmation). Nothing is removed until the user reviews the pile.
+- Fully on-device: no account, no network, no analytics, no data collection.
+- Free with no in-app purchases (confirmed by user). *Inferred:* many competing cleaners gate core use behind subscriptions; being genuinely free is a real differentiator, but do not claim competitor facts in copy without verification.
+
+## Operating Context
+- Works against the user's Apple Photos library (images and videos, including iCloud-only items that must download).
+- Order: newest first (confirmed).
+- Deleted items go to Photos → Recently Deleted for 30 days; space is only fully reclaimed after that album is emptied.
+- Users may grant Limited library access; the app must still work with the selected subset.
+
+## Capabilities and Constraints
+- Actions: Keep, Delete (to pending trash), Favorite (keep + `isFavorite`), Undo (reverts any of the three, including favorite state).
+- Trash review: grid of pending items, remove items from the pile, total size, single "Delete N items" commit.
+- Progress persists across launches; reviewed items do not reappear; "Reset progress" available.
+- Shows per-item file size and running "space to free" total; lifetime "space freed" stat.
+- Languages: English and Spanish (confirmed).
+- Distribution: App Store, free (confirmed). Paid Apple Developer account available.
+- **Undecided:** final app name (team proposes, user picks), bundle ID prefix, support email.
+
+## Brand Commitments
+None yet. Name and identity are open; "PhotoCleaner" is only the internal working name and must not appear in user-facing copy once a name is chosen.
+
+## Evidence on Hand
+No users, reviews, testimonials, press, or usage numbers exist. Do not fabricate ratings, download counts, "trusted by", or GB-freed statistics in the app, listing, or website.
+
+## Product Principles
+1. One decision per gesture; never make the user think about the UI instead of the photo.
+2. Reversible until confirmed: every swipe can be undone, and nothing leaves the library without an explicit final confirmation.
+3. Show the payoff: always make the space being freed visible.
+4. Private by construction: photos never leave the device, and the app says so plainly.
+5. Simple over clever: stupidly simple was the original brief.
+
+## Accessibility & Inclusion
+Every swipe action must be reachable without gestures (buttons and VoiceOver custom actions). Respect Dynamic Type and Reduce Motion. Minimum 44 pt tap targets. Full Spanish localization, not just the store listing.

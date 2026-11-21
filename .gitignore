@@ -1,0 +1,18 @@
+# Xcode
+build/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+*.xcscmblueprint
+*.ipa
+*.dSYM.zip
+*.dSYM
+*.xcarchive
+# macOS
+.DS_Store
+# Node / web
+node_modules/
+.vercel/
+# Secrets (App Store Connect API keys etc.)
+*.p8
+.env*
