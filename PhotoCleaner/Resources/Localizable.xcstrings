@@ -1,24 +1,41 @@
 {
   "sourceLanguage": "en",
   "strings": {
-    "Keep": {
+    "onboarding.page1.title": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Keep"
+            "value": "Swipe your way clean"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Conservar"
+            "value": "Limpia deslizando"
           }
         }
       }
     },
-    "Delete": {
+    "onboarding.page1.body": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Left to delete. Right to keep. Up to favorite ★. Oops? Undo brings it right back."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Izquierda para borrar. Derecha para guardar. Arriba para marcar como favorita ★. ¿Te equivocaste? Deshacer la recupera."
+          }
+        }
+      }
+    },
+    "onboarding.page1.demo.delete": {
       "extractionState": "manual",
       "localizations": {
         "en": {
@@ -30,12 +47,29 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Eliminar"
+            "value": "Borrar"
           }
         }
       }
     },
-    "Favorite": {
+    "onboarding.page1.demo.keep": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guardar"
+          }
+        }
+      }
+    },
+    "onboarding.page1.demo.favorite": {
       "extractionState": "manual",
       "localizations": {
         "en": {
@@ -47,29 +81,182 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Favorito"
+            "value": "Favorita"
           }
         }
       }
     },
-    "Undo": {
+    "onboarding.page1.demo.a11y": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Undo"
+            "value": "Demo: swipe left to delete, right to keep, up to favorite."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Deshacer"
+            "value": "Demostración: desliza a la izquierda para borrar, a la derecha para guardar, arriba para favorita."
           }
         }
       }
     },
-    "Open Settings": {
+    "onboarding.page2.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your photos never leave your iPhone"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tus fotos nunca salen de tu iPhone"
+          }
+        }
+      }
+    },
+    "onboarding.page2.body": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No account. No tracking. No data collected. Everything happens right here on your device."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin cuenta. Sin rastreo. No recopilamos datos. Todo ocurre aquí, en tu dispositivo."
+          }
+        }
+      }
+    },
+    "onboarding.page3.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Let's find your photos"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Busquemos tus fotos"
+          }
+        }
+      }
+    },
+    "onboarding.page3.body": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rollaway needs access to your photo library to show them to you. Nothing is deleted until you review your pile and confirm."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rollaway necesita acceso a tu fototeca para mostrártelas. No se borra nada hasta que revises tu pila y confirmes."
+          }
+        }
+      }
+    },
+    "onboarding.next": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Next"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Siguiente"
+          }
+        }
+      }
+    },
+    "onboarding.allow": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow photo access"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Permitir acceso a Fotos"
+          }
+        }
+      }
+    },
+    "onboarding.pageindicator.a11y": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Page %1$lld of %2$lld"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Página %1$lld de %2$lld"
+          }
+        }
+      }
+    },
+    "permission.denied.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photo access is off"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El acceso a Fotos está desactivado"
+          }
+        }
+      }
+    },
+    "permission.denied.body": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rollaway can't show your photos without access. Turn it on in Settings, then come back."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rollaway no puede mostrar tus fotos sin acceso. Actívalo en Ajustes y vuelve."
+          }
+        }
+      }
+    },
+    "permission.denied.button": {
       "extractionState": "manual",
       "localizations": {
         "en": {
@@ -86,70 +273,1846 @@
         }
       }
     },
-    "Photo access is off. Allow it in Settings to start.": {
+    "permission.limited.banner": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Photo access is off. Allow it in Settings to start."
+            "value": "You're sharing only some photos with Rollaway."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "El acceso a Fotos está desactivado. Actívalo en Ajustes para empezar."
+            "value": "Solo compartes algunas fotos con Rollaway."
           }
         }
       }
     },
-    "No more items to review.": {
+    "permission.limited.button": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "No more items to review."
+            "value": "Change selection"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "No quedan elementos por revisar."
+            "value": "Cambiar selección"
           }
         }
       }
     },
-    "%lld left": {
+    "permission.restricted.title": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "%lld left"
+            "value": "Photo access is restricted"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "%lld restantes"
+            "value": "El acceso a Fotos está restringido"
           }
         }
       }
     },
-    "Delete %lld items": {
+    "permission.restricted.body": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Delete %lld items"
+            "value": "This iPhone doesn't allow Rollaway to use photos. Check Screen Time or your device settings."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Eliminar %lld elementos"
+            "value": "Este iPhone no permite que Rollaway use las fotos. Revisa Tiempo en pantalla o los ajustes del dispositivo."
+          }
+        }
+      }
+    },
+    "swipe.stamp.keep": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "KEEP"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GUARDAR"
+          }
+        }
+      }
+    },
+    "swipe.stamp.delete": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "DELETE"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "BORRAR"
+          }
+        }
+      }
+    },
+    "swipe.stamp.favorite": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "FAVORITE"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "FAVORITA"
+          }
+        }
+      }
+    },
+    "swipe.counter": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%#@n@"
+          },
+          "substitutions": {
+            "n": {
+              "argNumber": 1,
+              "formatSpecifier": "lld",
+              "variations": {
+                "plural": {
+                  "one": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "1 left"
+                    }
+                  },
+                  "other": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "%arg left"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%#@n@"
+          },
+          "substitutions": {
+            "n": {
+              "argNumber": 1,
+              "formatSpecifier": "lld",
+              "variations": {
+                "plural": {
+                  "one": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "Queda 1"
+                    }
+                  },
+                  "many": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "Quedan %arg"
+                    }
+                  },
+                  "other": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "Quedan %arg"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "swipe.counter.a11y": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%#@n@"
+          },
+          "substitutions": {
+            "n": {
+              "argNumber": 1,
+              "formatSpecifier": "lld",
+              "variations": {
+                "plural": {
+                  "one": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "1 item left to review"
+                    }
+                  },
+                  "other": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "%arg items left to review"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%#@n@"
+          },
+          "substitutions": {
+            "n": {
+              "argNumber": 1,
+              "formatSpecifier": "lld",
+              "variations": {
+                "plural": {
+                  "one": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "Queda 1 elemento por revisar"
+                    }
+                  },
+                  "many": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "Quedan %arg elementos por revisar"
+                    }
+                  },
+                  "other": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "Quedan %arg elementos por revisar"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "swipe.trash.pill": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld · %2$@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld · %2$@"
+          }
+        }
+      }
+    },
+    "swipe.trash.pill.nosize": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%#@n@"
+          },
+          "substitutions": {
+            "n": {
+              "argNumber": 1,
+              "formatSpecifier": "lld",
+              "variations": {
+                "plural": {
+                  "one": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "1 item"
+                    }
+                  },
+                  "other": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "%arg items"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%#@n@"
+          },
+          "substitutions": {
+            "n": {
+              "argNumber": 1,
+              "formatSpecifier": "lld",
+              "variations": {
+                "plural": {
+                  "one": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "1 elemento"
+                    }
+                  },
+                  "many": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "%arg elementos"
+                    }
+                  },
+                  "other": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "%arg elementos"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "swipe.trash.pill.a11y": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trash pile, %#@n@, %2$@. Opens review."
+          },
+          "substitutions": {
+            "n": {
+              "argNumber": 1,
+              "formatSpecifier": "lld",
+              "variations": {
+                "plural": {
+                  "one": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "1 item"
+                    }
+                  },
+                  "other": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "%arg items"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pila de borrado, %#@n@, %2$@. Abre la revisión."
+          },
+          "substitutions": {
+            "n": {
+              "argNumber": 1,
+              "formatSpecifier": "lld",
+              "variations": {
+                "plural": {
+                  "one": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "1 elemento"
+                    }
+                  },
+                  "many": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "%arg elementos"
+                    }
+                  },
+                  "other": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "%arg elementos"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "swipe.button.undo.label": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Undo"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deshacer"
+          }
+        }
+      }
+    },
+    "swipe.button.undo.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brings back your last decision."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recupera tu última decisión."
+          }
+        }
+      }
+    },
+    "swipe.button.delete.label": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Borrar"
+          }
+        }
+      }
+    },
+    "swipe.button.delete.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adds this item to your trash pile."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añade este elemento a tu pila de borrado."
+          }
+        }
+      }
+    },
+    "swipe.button.favorite.label": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Favorite"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Favorita"
+          }
+        }
+      }
+    },
+    "swipe.button.favorite.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keeps this item and adds it to Favorites in Photos."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guarda este elemento y lo añade a Favoritos en Fotos."
+          }
+        }
+      }
+    },
+    "swipe.button.keep.label": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guardar"
+          }
+        }
+      }
+    },
+    "swipe.button.keep.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keeps this item and moves to the next one."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guarda este elemento y pasa al siguiente."
+          }
+        }
+      }
+    },
+    "swipe.video.mute": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mute"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Silenciar"
+          }
+        }
+      }
+    },
+    "swipe.video.unmute": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unmute"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activar sonido"
+          }
+        }
+      }
+    },
+    "swipe.video.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Videos play muted. Tap to change sound."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los videos empiezan en silencio. Toca para cambiar el sonido."
+          }
+        }
+      }
+    },
+    "swipe.card.a11y.photo": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photo, %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Foto, %@"
+          }
+        }
+      }
+    },
+    "swipe.card.a11y.video": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Video, %1$@, %2$@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Video, %1$@, %2$@"
+          }
+        }
+      }
+    },
+    "swipe.card.a11y.actions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Use the Keep, Delete or Favorite actions."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usa las acciones Guardar, Borrar o Favorita."
+          }
+        }
+      }
+    },
+    "swipe.meta.size.a11y": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Size %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tamaño: %@"
+          }
+        }
+      }
+    },
+    "swipe.meta.duration.a11y": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Length %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Duración: %@"
+          }
+        }
+      }
+    },
+    "swipe.meta.favorite.badge.a11y": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Already a favorite"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ya es favorita"
+          }
+        }
+      }
+    },
+    "swipe.loading.icloud": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Getting it from iCloud..."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Descargando de iCloud..."
+          }
+        }
+      }
+    },
+    "empty.done.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All caught up!"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¡Todo al día!"
+          }
+        }
+      }
+    },
+    "empty.done.body": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You've been through your whole library. New photos will show up here."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ya revisaste toda tu biblioteca. Las fotos nuevas aparecerán aquí."
+          }
+        }
+      }
+    },
+    "empty.done.review": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Review trash pile"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Revisar pila de borrado"
+          }
+        }
+      }
+    },
+    "empty.library.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No photos yet"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aún no hay fotos"
+          }
+        }
+      }
+    },
+    "empty.library.body": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Take a few photos and come back."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toma algunas fotos y vuelve."
+          }
+        }
+      }
+    },
+    "trash.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trash pile"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pila de borrado"
+          }
+        }
+      }
+    },
+    "trash.summary": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%#@n@ · %2$@"
+          },
+          "substitutions": {
+            "n": {
+              "argNumber": 1,
+              "formatSpecifier": "lld",
+              "variations": {
+                "plural": {
+                  "one": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "1 item"
+                    }
+                  },
+                  "other": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "%arg items"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%#@n@ · %2$@"
+          },
+          "substitutions": {
+            "n": {
+              "argNumber": 1,
+              "formatSpecifier": "lld",
+              "variations": {
+                "plural": {
+                  "one": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "1 elemento"
+                    }
+                  },
+                  "many": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "%arg elementos"
+                    }
+                  },
+                  "other": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "%arg elementos"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "trash.summary.nosize": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%#@n@"
+          },
+          "substitutions": {
+            "n": {
+              "argNumber": 1,
+              "formatSpecifier": "lld",
+              "variations": {
+                "plural": {
+                  "one": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "1 item"
+                    }
+                  },
+                  "other": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "%arg items"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%#@n@"
+          },
+          "substitutions": {
+            "n": {
+              "argNumber": 1,
+              "formatSpecifier": "lld",
+              "variations": {
+                "plural": {
+                  "one": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "1 elemento"
+                    }
+                  },
+                  "many": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "%arg elementos"
+                    }
+                  },
+                  "other": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "%arg elementos"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "trash.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tap a photo to take it out of the pile."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toca una foto para sacarla de la pila."
+          }
+        }
+      }
+    },
+    "trash.item.a11y": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove from pile"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sacar de la pila"
+          }
+        }
+      }
+    },
+    "trash.item.removed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Removed from pile"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sacado de la pila"
+          }
+        }
+      }
+    },
+    "trash.delete.button": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%#@n@"
+          },
+          "substitutions": {
+            "n": {
+              "argNumber": 1,
+              "formatSpecifier": "lld",
+              "variations": {
+                "plural": {
+                  "one": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "Delete 1 item"
+                    }
+                  },
+                  "other": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "Delete %arg items"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%#@n@"
+          },
+          "substitutions": {
+            "n": {
+              "argNumber": 1,
+              "formatSpecifier": "lld",
+              "variations": {
+                "plural": {
+                  "one": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "Borrar 1 elemento"
+                    }
+                  },
+                  "many": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "Borrar %arg elementos"
+                    }
+                  },
+                  "other": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "Borrar %arg elementos"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "trash.delete.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOS will ask you to confirm."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOS te pedirá confirmar."
+          }
+        }
+      }
+    },
+    "trash.close": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Close"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cerrar"
+          }
+        }
+      }
+    },
+    "trash.empty.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your pile is empty"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu pila está vacía"
+          }
+        }
+      }
+    },
+    "trash.empty.body": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Swipe left on photos to add them here."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desliza fotos a la izquierda para añadirlas aquí."
+          }
+        }
+      }
+    },
+    "trash.explainer.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Where do deleted items go?"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿A dónde van los elementos borrados?"
+          }
+        }
+      }
+    },
+    "trash.explainer.body": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "They move to Recently Deleted in Photos and stay there for 30 days. To get the space back right away: Photos > Albums > Recently Deleted > Select > Delete All."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pasan a Eliminados recientemente en Fotos y se quedan ahí 30 días. Para recuperar el espacio ya: Fotos > Álbumes > Eliminados recientemente > Seleccionar > Eliminar todo."
+          }
+        }
+      }
+    },
+    "trash.cancelled": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nothing was deleted. Your pile is still here."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se borró nada. Tu pila sigue aquí."
+          }
+        }
+      }
+    },
+    "celebration.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You cleared %@!"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¡Limpiaste %@!"
+          }
+        }
+      }
+    },
+    "celebration.title.nosize": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%#@n@"
+          },
+          "substitutions": {
+            "n": {
+              "argNumber": 1,
+              "formatSpecifier": "lld",
+              "variations": {
+                "plural": {
+                  "one": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "1 item cleared!"
+                    }
+                  },
+                  "other": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "%arg items cleared!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%#@n@"
+          },
+          "substitutions": {
+            "n": {
+              "argNumber": 1,
+              "formatSpecifier": "lld",
+              "variations": {
+                "plural": {
+                  "one": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "¡1 elemento limpiado!"
+                    }
+                  },
+                  "many": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "¡%arg elementos limpiados!"
+                    }
+                  },
+                  "other": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "¡%arg elementos limpiados!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "celebration.body": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Moved to Recently Deleted. Empty that album in Photos to get the space back."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pasó a Eliminados recientemente. Vacía ese álbum en Fotos para recuperar el espacio."
+          }
+        }
+      }
+    },
+    "celebration.lifetime": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total cleared with Rollaway: %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total limpiado con Rollaway: %@"
+          }
+        }
+      }
+    },
+    "celebration.continue": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep going"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seguir"
+          }
+        }
+      }
+    },
+    "settings.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Settings"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajustes"
+          }
+        }
+      }
+    },
+    "settings.done": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Done"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Listo"
+          }
+        }
+      }
+    },
+    "settings.lifetime.label": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total cleared"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total limpiado"
+          }
+        }
+      }
+    },
+    "settings.reset.button": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reset progress"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reiniciar progreso"
+          }
+        }
+      }
+    },
+    "settings.reset.confirm.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reset progress?"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Reiniciar progreso?"
+          }
+        }
+      }
+    },
+    "settings.reset.confirm.message": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photos you've already reviewed will show up again for review. Your trash pile and your total cleared stay as they are. Nothing is deleted from your library."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Las fotos que ya revisaste volverán a aparecer para revisarlas. Tu pila de borrado y tu total limpiado se quedan como están. No se borra nada de tu biblioteca."
+          }
+        }
+      }
+    },
+    "settings.reset.confirm.action": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reset"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reiniciar"
+          }
+        }
+      }
+    },
+    "settings.reset.confirm.cancel": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancel"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancelar"
+          }
+        }
+      }
+    },
+    "settings.reset.done": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Progress reset."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Progreso reiniciado."
+          }
+        }
+      }
+    },
+    "settings.privacy": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Privacy Policy"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Política de privacidad"
+          }
+        }
+      }
+    },
+    "settings.support": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Support"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Soporte"
+          }
+        }
+      }
+    },
+    "settings.rate": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rate Rollaway"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calificar Rollaway"
+          }
+        }
+      }
+    },
+    "settings.version": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Version %1$@ (%2$@)"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Versión %1$@ (%2$@)"
+          }
+        }
+      }
+    },
+    "settings.about.tagline": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No account. No tracking. No data collected."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin cuenta. Sin rastreo. No recopilamos datos."
+          }
+        }
+      }
+    },
+    "settings.a11y.open": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Settings"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajustes"
+          }
+        }
+      }
+    },
+    "settings.photos.label": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photos access"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acceso a Fotos"
+          }
+        }
+      }
+    },
+    "settings.photos.full": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Full access"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acceso total"
+          }
+        }
+      }
+    },
+    "settings.photos.limited": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selected photos"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotos seleccionadas"
+          }
+        }
+      }
+    },
+    "settings.photos.off": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Off"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desactivado"
+          }
+        }
+      }
+    },
+    "swipe.announce.kept": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kept."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guardado."
+          }
+        }
+      }
+    },
+    "swipe.announce.favorited": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Favorited."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marcado como favorito."
+          }
+        }
+      }
+    },
+    "swipe.announce.undone": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Undone."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deshecho."
+          }
+        }
+      }
+    },
+    "swipe.announce.trashed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%#@n@"
+          },
+          "substitutions": {
+            "n": {
+              "argNumber": 1,
+              "formatSpecifier": "lld",
+              "variations": {
+                "plural": {
+                  "one": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "Moved to the trash pile. 1 item in the pile."
+                    }
+                  },
+                  "other": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "Moved to the trash pile. %arg items in the pile."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%#@n@"
+          },
+          "substitutions": {
+            "n": {
+              "argNumber": 1,
+              "formatSpecifier": "lld",
+              "variations": {
+                "plural": {
+                  "one": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "Movido a la pila de borrado. 1 elemento en la pila."
+                    }
+                  },
+                  "many": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "Movido a la pila de borrado. %arg elementos en la pila."
+                    }
+                  },
+                  "other": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "Movido a la pila de borrado. %arg elementos en la pila."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "swipe.video.play": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Play video"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reproducir video"
+          }
+        }
+      }
+    },
+    "onboarding.notnow": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not now"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ahora no"
+          }
+        }
+      }
+    },
+    "error.load.photo": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn't load this item."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se pudo cargar este elemento."
+          }
+        }
+      }
+    },
+    "error.delete.failed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn't delete those items. Your pile is still here."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se pudieron borrar esos elementos. Tu pila sigue aquí."
+          }
+        }
+      }
+    },
+    "error.retry": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Try again"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Intentar de nuevo"
           }
         }
       }

@@ -114,7 +114,7 @@ final class PhotoLibrary: PhotoLibraryProviding {
         let once = ResumeOnce()
         return await withCheckedContinuation { continuation in
             // Explicitly @Sendable: Photos may call back off the main actor.
-            manager.requestImage(for: asset, targetSize: targetSize, contentMode: .aspectFit, options: options) {
+            manager.requestImage(for: asset, targetSize: targetSize, contentMode: .aspectFill, options: options) {
                 @Sendable image, info in
                 let degraded = (info?[PHImageResultIsDegradedKey] as? Bool) ?? false
                 if degraded && image != nil { return }
@@ -140,7 +140,7 @@ final class PhotoLibrary: PhotoLibraryProviding {
         cachingManager.stopCachingImagesForAllAssets()
         let assets = ids.compactMap { asset(for: $0) }
         guard !assets.isEmpty else { return }
-        cachingManager.startCachingImages(for: assets, targetSize: targetSize, contentMode: .aspectFit, options: imageOptions)
+        cachingManager.startCachingImages(for: assets, targetSize: targetSize, contentMode: .aspectFill, options: imageOptions)
     }
 
     func stopCaching() {

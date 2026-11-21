@@ -115,6 +115,37 @@ struct DecisionTests {
         #expect(!f.library.isFavorite("2"))
     }
 
+    @Test func restoreToTrashPutsItemBackAtItsIndex() async {
+        let f = await Fixture.make()
+        f.session.trash()
+        f.session.trash()
+        f.session.trash()
+        let removed = f.session.pendingTrash[1]
+        f.session.untrash(removed.id)
+        #expect(f.session.pendingTrash.map(\.id) == ["0", "2"])
+        f.session.restoreToTrash(removed, at: 1)
+        #expect(f.session.pendingTrash.map(\.id) == ["0", "1", "2"])
+        #expect(!f.session.reviewedIDs.contains(removed.id))
+    }
+
+    @Test func hasLoadedFlipsAfterLoad() async {
+        let library = FakePhotoLibrary(items: [MediaItem(id: "0")])
+        let session = SwipeSession(library: library, store: Fixture.tempStore())
+        #expect(!session.hasLoaded)
+        await session.load()
+        #expect(session.hasLoaded)
+    }
+
+    @Test func reloadKeepsUndoHistoryAndQueueWhenNothingChanged() async {
+        let f = await Fixture.make()
+        f.session.keep()
+        await f.session.load()
+        #expect(f.session.canUndo)
+        #expect(f.session.queue.map(\.id) == ["1", "2", "3", "4"])
+        f.session.undo()
+        #expect(f.session.current?.id == "0")
+    }
+
     @Test func undoWithEmptyHistoryIsNoOp() async {
         let f = await Fixture.make()
         f.session.undo()

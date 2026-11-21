@@ -21,6 +21,8 @@ final class SwipeSession {
     /// Size of the library at last `load()` (for "n of total" counters).
     private(set) var totalCount = 0
     private(set) var isLoading = false
+    /// `true` once a load has completed with read access (distinguishes "loading" from "empty").
+    private(set) var hasLoaded = false
     private(set) var isCommitting = false
     /// Last Photos failure from a fire-and-forget operation (favorite).
     private(set) var lastError: (any Error)?
@@ -29,6 +31,10 @@ final class SwipeSession {
     var remainingCount: Int { queue.count }
     var canUndo: Bool { !history.isEmpty }
     var pendingTrashBytes: Int64 { pendingTrash.reduce(0) { $0 + ($1.byteSize ?? 0) } }
+    /// `false` when no item in the pile has a known size (the size API is unavailable).
+    var pendingTrashHasSizes: Bool { pendingTrash.contains { $0.byteSize != nil } }
+    /// Items reviewed in this library snapshot, for "n of total" style displays.
+    var reviewedCount: Int { max(0, totalCount - queue.count - pendingTrash.count) }
 
     /// Pixel size used for prefetching; the UI should set it to its card size.
     @ObservationIgnored var prefetchTargetSize = CGSize(width: 1200, height: 1600)
@@ -40,7 +46,6 @@ final class SwipeSession {
     @ObservationIgnored private let store: ProgressStore
 
     @ObservationIgnored private var unresolvedPendingIDs: [String]
-    @ObservationIgnored private var hasLoaded = false
     @ObservationIgnored private var sizeCache: [String: Int64] = [:]
 
     // Photos favorite writes run in order, off the gesture path.
@@ -96,8 +101,11 @@ final class SwipeSession {
         let pendingSet = Set(resolvedPending.map(\.id))
 
         pendingTrash = resolvedPending
-        queue = items.filter { !reviewedIDs.contains($0.id) && !pendingSet.contains($0.id) }
-        history = []
+        let newQueue = items.filter { !reviewedIDs.contains($0.id) && !pendingSet.contains($0.id) }
+        // Avoid churn (and a visible reshuffle) when a foreground reload finds nothing new.
+        if newQueue.map(\.id) != queue.map(\.id) { queue = newQueue }
+        // Undo survives a reload as long as the decided item still exists.
+        history.removeAll { byID[$0.item.id] == nil }
         hasLoaded = true
         unresolvedPendingIDs = []
 
@@ -148,6 +156,14 @@ final class SwipeSession {
         guard pendingTrash.contains(where: { $0.id == id }) else { return }
         pendingTrash.removeAll { $0.id == id }
         reviewedIDs.insert(id)
+        didMutate()
+    }
+
+    /// Puts an item that was just taken out of the pile back at `index` (undo of `untrash`).
+    func restoreToTrash(_ item: MediaItem, at index: Int) {
+        guard !pendingTrash.contains(where: { $0.id == item.id }) else { return }
+        reviewedIDs.remove(item.id)
+        pendingTrash.insert(item, at: min(max(0, index), pendingTrash.count))
         didMutate()
     }
 
