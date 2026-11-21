@@ -1,6 +1,6 @@
 # In-app strings (EN / ES)
 
-Voice: friendly, short, plain, a little playful. ES: neutral Latin-American Spanish, "tú". `{AppName}` is a literal placeholder to be replaced at build time (or use the Xcode product name variable). `%lld` = integer, `%@` = string (already formatted). Terms: EN "trash pile" / ES "pila de borrado"; EN "Recently Deleted" / ES "Eliminados recientemente" (verify against the iOS Photos album name on an ES device, which varies by region).
+Voice: friendly, short, plain, a little playful. ES: neutral Latin-American Spanish, "tú". The app name is **Rollaway** (chosen at Gate 1). Strings below show the name literally; if the display name is ever changed, search and replace it in this file. `%lld` = integer, `%@` = string (already formatted). Terms: EN "trash pile" / ES "pila de borrado"; EN "Recently Deleted" / ES "Eliminados recientemente" (verify against the iOS Photos album name on an ES device, which varies by region).
 
 ## Engineering notes
 
@@ -16,7 +16,7 @@ Voice: friendly, short, plain, a little playful. ES: neutral Latin-American Span
 **Other.** Swipe stamps are uppercase in the UI; store them uppercase. Do not concatenate fragments across keys; each key is a full sentence. Info.plist strings go in `InfoPlist.xcstrings`.
 
 **Open product questions (copy depends on engineering):**
-1. `settings.reset.message` says nothing about the lifetime total; confirm whether Reset progress keeps or clears it, then add one sentence.
+1. (Resolved) Reset progress clears only the review history: swiped items come back for review; the pending trash pile and the lifetime cleared total are kept. `settings.reset.confirm.message` says so.
 2. Size strings (`swipe.meta.size`, trash pill MB, summary MB) hide when the size API is unavailable; use the `.nosize` variants.
 3. Celebration headline says "cleared" (not "freed") on purpose: the space is only freed after Recently Deleted is emptied. The spec said "You freed X MB"; this is a deliberate accuracy change.
 
@@ -35,20 +35,20 @@ Voice: friendly, short, plain, a little playful. ES: neutral Latin-American Span
 | onboarding.page2.title | Your photos never leave your iPhone | Tus fotos nunca salen de tu iPhone | |
 | onboarding.page2.body | No account. No tracking. No data collected. Everything happens right here on your device. | Sin cuenta. Sin rastreo. No recopilamos datos. Todo ocurre aquí, en tu dispositivo. | |
 | onboarding.page3.title | Let's find your photos | Busquemos tus fotos | Pre-permission page |
-| onboarding.page3.body | {AppName} needs access to your photo library to show them to you. Nothing is deleted until you review your pile and confirm. | {AppName} necesita acceso a tu fototeca para mostrártelas. No se borra nada hasta que revises tu pila y confirmes. | |
+| onboarding.page3.body | Rollaway needs access to your photo library to show them to you. Nothing is deleted until you review your pile and confirm. | Rollaway necesita acceso a tu fototeca para mostrártelas. No se borra nada hasta que revises tu pila y confirmes. | |
 | onboarding.next | Next | Siguiente | Pages 1-2 button |
 | onboarding.allow | Allow photo access | Permitir acceso a Fotos | Page 3 primary; triggers the system prompt |
 | onboarding.pageindicator.a11y | Page %lld of %lld | Página %lld de %lld | |
 | **System permission (InfoPlist)** | | | |
-| infoplist.NSPhotoLibraryUsageDescription | {AppName} shows your photos and videos one at a time so you can keep or delete them. They never leave your iPhone. | {AppName} te muestra tus fotos y videos uno por uno para que decidas cuáles guardar o borrar. Nunca salen de tu iPhone. | Info.plist; must be specific. Name literal at build time |
+| infoplist.NSPhotoLibraryUsageDescription | Rollaway shows your photos and videos one at a time so you can keep or delete them. They never leave your iPhone. | Rollaway te muestra tus fotos y videos uno por uno para que decidas cuáles guardar o borrar. Nunca salen de tu iPhone. | Info.plist; must be specific. Name is literal |
 | **Permission states** | | | |
 | permission.denied.title | Photo access is off | El acceso a Fotos está desactivado | |
-| permission.denied.body | {AppName} can't show your photos without access. Turn it on in Settings, then come back. | {AppName} no puede mostrar tus fotos sin acceso. Actívalo en Ajustes y vuelve. | |
+| permission.denied.body | Rollaway can't show your photos without access. Turn it on in Settings, then come back. | Rollaway no puede mostrar tus fotos sin acceso. Actívalo en Ajustes y vuelve. | |
 | permission.denied.button | Open Settings | Abrir Ajustes | Opens app settings URL |
-| permission.limited.banner | You're sharing only some photos with {AppName}. | Solo compartes algunas fotos con {AppName}. | Top banner |
+| permission.limited.banner | You're sharing only some photos with Rollaway. | Solo compartes algunas fotos con Rollaway. | Top banner |
 | permission.limited.button | Change selection | Cambiar selección | Presents `presentLimitedLibraryPicker` |
 | permission.restricted.title | Photo access is restricted | El acceso a Fotos está restringido | Parental controls / MDM |
-| permission.restricted.body | This iPhone doesn't allow {AppName} to use photos. Check Screen Time or your device settings. | Este iPhone no permite que {AppName} use las fotos. Revisa Tiempo en pantalla o los ajustes del dispositivo. | |
+| permission.restricted.body | This iPhone doesn't allow Rollaway to use photos. Check Screen Time or your device settings. | Este iPhone no permite que Rollaway use las fotos. Revisa Tiempo en pantalla o los ajustes del dispositivo. | |
 | **Swipe screen** | | | |
 | swipe.stamp.keep | KEEP | GUARDAR | Stamp, uppercase |
 | swipe.stamp.delete | DELETE | BORRAR | Stamp, uppercase |
@@ -104,7 +104,7 @@ Voice: friendly, short, plain, a little playful. ES: neutral Latin-American Span
 | celebration.title | You cleared %@! | ¡Limpiaste %@! | Arg: formatted size. Not "freed" on purpose |
 | celebration.title.nosize | `PLURAL` one: 1 item cleared! / other: %lld items cleared! | `PLURAL` one: ¡1 elemento limpiado! / many, other: ¡%lld elementos limpiados! | If size unavailable |
 | celebration.body | Moved to Recently Deleted. Empty that album in Photos to get the space back. | Pasó a Eliminados recientemente. Vacía ese álbum en Fotos para recuperar el espacio. | |
-| celebration.lifetime | Total cleared with {AppName}: %@ | Total limpiado con {AppName}: %@ | Arg: lifetime formatted bytes |
+| celebration.lifetime | Total cleared with Rollaway: %@ | Total limpiado con Rollaway: %@ | Arg: lifetime formatted bytes |
 | celebration.continue | Keep going | Seguir | Primary |
 | celebration.openphotos | Open Photos | Abrir Fotos | Optional secondary; omit to keep one CTA |
 | **Settings / About** | | | |
@@ -113,13 +113,13 @@ Voice: friendly, short, plain, a little playful. ES: neutral Latin-American Span
 | settings.lifetime.label | Total cleared | Total limpiado | Row, value is formatted bytes |
 | settings.reset.button | Reset progress | Reiniciar progreso | Destructive row |
 | settings.reset.confirm.title | Reset progress? | ¿Reiniciar progreso? | |
-| settings.reset.confirm.message | Photos you've already reviewed will show up again and your trash pile will be emptied. Nothing is deleted from your library. | Las fotos que ya revisaste volverán a aparecer y tu pila de borrado se vaciará. No se borra nada de tu biblioteca. | See open question 1 |
+| settings.reset.confirm.message | Photos you've already reviewed will show up again for review. Your trash pile and your total cleared stay as they are. Nothing is deleted from your library. | Las fotos que ya revisaste volverán a aparecer para revisarlas. Tu pila de borrado y tu total limpiado se quedan como están. No se borra nada de tu biblioteca. | Matches engineering: reset clears review history only |
 | settings.reset.confirm.action | Reset | Reiniciar | Destructive |
 | settings.reset.confirm.cancel | Cancel | Cancelar | |
 | settings.reset.done | Progress reset. | Progreso reiniciado. | Toast / announcement |
 | settings.privacy | Privacy Policy | Política de privacidad | Opens website page |
 | settings.support | Support | Soporte | Opens website page |
-| settings.rate | Rate {AppName} | Calificar {AppName} | Opens App Store review URL |
+| settings.rate | Rate Rollaway | Calificar Rollaway | Opens App Store review URL |
 | settings.version | Version %@ (%@) | Versión %@ (%@) | Args: marketing version, build |
 | settings.about.tagline | No account. No tracking. No data collected. | Sin cuenta. Sin rastreo. No recopilamos datos. | About footer |
 | settings.a11y.open | Settings | Ajustes | Gear button label |

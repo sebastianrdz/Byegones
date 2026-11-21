@@ -47,7 +47,7 @@ The app may occasionally ask you to rate it using Apple's built-in rating prompt
 
 ## Website
 
-[CONFIRM BEFORE PUBLISHING: The {AppName} website is a static site hosted by Vercel. We do not run analytics or set cookies on it. Like most web hosts, the host may keep standard technical server logs, such as IP address and request time. If this is not accurate, edit this section.]
+The {AppName} website is a static site hosted by Vercel. It uses no analytics, cookies, trackers, or external fonts or scripts. Like most web hosts, Vercel may keep standard technical server logs, such as IP address and request time.
 
 ## Children
 

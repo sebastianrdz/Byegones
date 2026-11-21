@@ -24,7 +24,7 @@ Tus fotos, videos y sus metadatos se procesan únicamente en tu dispositivo. La 
 
 La app guarda una pequeña cantidad de datos en su propio almacenamiento en tu iPhone:
 
-- Una lista de los identificadores de los elementos que ya revisaste y de los que están esperando en tu pila de eliminación. Son identificadores internos de Fotos, no las fotos en sí.
+- Una lista de los identificadores de los elementos que ya revisaste y de los que están esperando en tu pila de borrado. Son identificadores internos de Fotos, no las fotos en sí.
 - Un total acumulado del espacio que has liberado con la app.
 - Un ajuste que recuerda si ya terminaste las pantallas de introducción.
 
@@ -32,7 +32,7 @@ Estos datos nunca salen de tu dispositivo a través de la app. Como otros datos 
 
 ## Cómo borrar estos datos
 
-- **Restablecer progreso:** en la app, ve a Ajustes y elige Restablecer progreso para borrar el historial de revisión que guarda la app.
+- **Reiniciar progreso:** en la app, ve a Ajustes y elige Reiniciar progreso para borrar el historial de revisión que guarda la app.
 - **Desinstalar:** al eliminar la app de tu iPhone se borran todos los datos que guarda.
 
 Los elementos que elimines con la app pasan al álbum Eliminados recientemente de Fotos, donde iOS los conserva 30 días antes de borrarlos de forma permanente. Puedes recuperarlos o eliminarlos definitivamente desde la app Fotos.
@@ -47,7 +47,7 @@ La app puede pedirte ocasionalmente que la califiques con el aviso de calificaci
 
 ## Sitio web
 
-[CONFIRMAR ANTES DE PUBLICAR: El sitio web de {AppName} es un sitio estático alojado en Vercel. No usamos analíticas ni cookies en él. Como la mayoría de los servicios de alojamiento, el proveedor puede conservar registros técnicos estándar del servidor, como la dirección IP y la hora de la solicitud. Si esto no es exacto, edita esta sección.]
+El sitio web de {AppName} es un sitio estático alojado en Vercel. No usa analíticas, cookies, rastreadores ni fuentes o scripts externos. Como la mayoría de los servicios de alojamiento, Vercel puede conservar registros técnicos estándar del servidor, como la dirección IP y la hora de la solicitud.
 
 ## Menores de edad
 

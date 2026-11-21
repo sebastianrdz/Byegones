@@ -1,9 +1,9 @@
 # App Store listing (ES)
 
-Marcador: `{AppName}` = nombre elegido en el Gate 1. Localización Español (México), reutilizable en Español (España). Tono: tú, español neutro latinoamericano.
+Nombre de la app: **Rollaway** (elegido en el Gate 1, subtítulo A). Localización Español (México), reutilizable en Español (España). Tono: tú, español neutro latinoamericano.
 
 ## Name
-`{AppName}` (<= 30 chars; see `names.md`)
+`Rollaway` (8 chars; see `names.md`)
 
 ## Subtitle options (<= 30)
 - A. `Limpia tu galería deslizando` (28)
@@ -21,7 +21,7 @@ Limpia tu carrete en minutos. Desliza a la izquierda para borrar, a la derecha p
 ```text
 Tu carrete, un deslizamiento a la vez.
 
-{AppName} convierte la limpieza de fotos en un juego rápido: desliza a la izquierda para borrar, a la derecha para guardar y hacia arriba para marcar como favorita. Gratis, sin cuenta y tus fotos nunca salen de tu iPhone.
+Rollaway convierte la limpieza de fotos en un juego rápido: desliza a la izquierda para borrar, a la derecha para guardar y hacia arriba para marcar como favorita. Gratis, sin cuenta y tus fotos nunca salen de tu iPhone.
 
 DESLIZA. DECIDE. LISTO.
 - Primero lo más reciente, un elemento a la vez y a pantalla completa
@@ -43,8 +43,8 @@ PENSADA PARA LOS DEDAZOS
 PRIVADA POR DISEÑO
 - Sin cuenta, sin registro, sin anuncios
 - Sin rastreo, sin analíticas, sin recopilar datos
-- Tus fotos y videos se quedan en tu iPhone. {AppName} no tiene servidores a los que enviarlos.
-- También funciona con acceso limitado: comparte solo algunas fotos y {AppName} limpia justo esas.
+- Tus fotos y videos se quedan en tu iPhone. Rollaway no tiene servidores a los que enviarlos.
+- También funciona con acceso limitado: comparte solo algunas fotos y Rollaway limpia justo esas.
 
 CÓMO FUNCIONA
 1. Permite el acceso a tus fotos.
@@ -53,7 +53,7 @@ CÓMO FUNCIONA
 4. Listo. Tus elementos pasan al álbum Eliminados recientemente de Fotos.
 
 BUENO SABER: CÓMO RECUPERAR EL ESPACIO
-Cuando borras fotos en el iPhone, iOS las guarda 30 días en Eliminados recientemente. El almacenamiento se libera por completo cuando vacías ese álbum. Para recuperar el espacio ya, abre Fotos > Álbumes > Eliminados recientemente > Seleccionar > Eliminar todo. {AppName} te lo recuerda después de cada limpieza.
+Cuando borras fotos en el iPhone, iOS las guarda 30 días en Eliminados recientemente. El almacenamiento se libera por completo cuando vacías ese álbum. Para recuperar el espacio ya, abre Fotos > Álbumes > Eliminados recientemente > Seleccionar > Eliminar todo. Rollaway te lo recuerda después de cada limpieza.
 
 GRATIS DE VERDAD
 Sin compras dentro de la app, sin suscripciones, sin pruebas.
@@ -75,12 +75,12 @@ intersection: (none)
 duplicates within keywords: (none)
 spaces inside keyword string: none
 ```
-If the name changes at Gate 1, re-check against the new name.
+Name is final (Rollaway); re-check only if it changes.
 
 ## What's New (1.0)
-¡Bienvenido a {AppName}! Desliza por tus fotos y videos, arma una pila de borrado y bórrala toda de una vez. Deshacer siempre está a un toque. Gratis, privada y sin cuenta.
+¡Bienvenido a Rollaway! Desliza por tus fotos y videos, arma una pila de borrado y bórrala toda de una vez. Deshacer siempre está a un toque. Gratis, privada y sin cuenta.
 
-(172 chars)
+(171 chars)
 
 ## Screenshot captions (<= 30 chars; in shot order)
 
@@ -101,10 +101,10 @@ If the name changes at Gate 1, re-check against the new name.
 | Subtitle option B | 29 | 30 | OK |
 | Subtitle option C | 27 | 30 | OK |
 | Promotional text | 168 | 170 | OK |
-| Description (placeholder as-is) | 2103 | 4000 | OK |
-| Description ({AppName} = 30 chars) | 2187 | 4000 | OK |
+| Description (with Rollaway) | 2099 | 4000 | OK |
+| Description (name replaced by 30 chars, worst case) | 2187 | 4000 | OK |
 | Keywords | 98 | 100 | OK |
-| What's New 1.0 | 172 | 4000 | OK |
+| What's New 1.0 | 171 | 4000 | OK |
 | Caption 1 | 22 | 30 | OK |
 | Caption 2 | 25 | 30 | OK |
 | Caption 3 | 23 | 30 | OK |
