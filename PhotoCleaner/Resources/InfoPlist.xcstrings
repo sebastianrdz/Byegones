@@ -1,0 +1,23 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "NSPhotoLibraryUsageDescription": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To show your photos and videos one at a time so you can keep, favorite or delete them. Your photos never leave your iPhone."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para mostrarte tus fotos y videos uno por uno y que puedas conservarlos, marcarlos como favoritos o eliminarlos. Tus fotos nunca salen de tu iPhone."
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

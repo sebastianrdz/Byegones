@@ -16,3 +16,4 @@ node_modules/
 # Secrets (App Store Connect API keys etc.)
 *.p8
 .env*
+.playwright-mcp/
