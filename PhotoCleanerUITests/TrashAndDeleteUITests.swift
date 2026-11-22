@@ -46,6 +46,32 @@ final class TrashAndDeleteUITests: RollawayUITestCase {
         waitForPile(2)
     }
 
+    /// A cell tapped and Delete tapped straight after: the rescued photo must not be in the batch.
+    func testRescuedPhotoIsNotDeletedWhenDeleteIsTappedRightAfterTheTap() {
+        swipeCard(.left); waitForPile(1)
+        swipeCard(.left); waitForPile(2)
+        swipeCard(.left); waitForPile(3)
+        openTrash()
+        XCTAssertEqual(trashCells.count, 3)
+
+        trashCells.firstMatch.tap()
+        // No waiting for the shrink animation: the button already speaks for the two that are left.
+        let delete = app.buttons["Delete 2 items"]
+        XCTAssertTrue(delete.waitForExistence(timeout: 2), "Delete should already count 2 items")
+        delete.tap()
+
+        guard let confirm = systemDeleteButton() else { return XCTFail("No system confirmation appeared") }
+        // The alert's own text names the count ("Allow Rollaway to delete 2 photos?"); the button is just "Delete".
+        let alerts = [springboard, app].flatMap { $0.alerts.allElementsBoundByIndex }
+        let alertText = alerts.flatMap { [$0.label] + $0.staticTexts.allElementsBoundByIndex.map(\.label) }.joined(separator: " | ")
+        XCTAssertTrue(alertText.contains("delete 2 photo"), "The rescued photo must not be in the batch; the alert says: \(alertText)")
+        confirm.tap()
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label CONTAINS 'cleared'")).firstMatch.waitForExistence(timeout: 15))
+        app.buttons["Keep going"].tap()
+        XCTAssertTrue(counter.waitForExistence(timeout: 10))
+        waitForPile(0)
+    }
+
     func testEmptyTrashSheetShowsEmptyStateAndNoDeleteButton() {
         openTrash()
         XCTAssertTrue(app.staticTexts["Your pile is empty"].exists)

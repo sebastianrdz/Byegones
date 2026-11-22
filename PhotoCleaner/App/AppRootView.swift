@@ -59,25 +59,29 @@ struct AppRootView: View {
 }
 
 /// Keeps the process alive long enough to finish writing progress when the app goes to the background.
+/// Every run holds its own background task and ends only that one, so overlapping flushes
+/// (background, foreground, background again) never end each other's time.
 @MainActor
 final class BackgroundFlush {
-    private var identifier = UIBackgroundTaskIdentifier.invalid
+    private final class Ticket {
+        var identifier = UIBackgroundTaskIdentifier.invalid
 
-    func run(_ work: @escaping () async -> Void) {
-        end()
-        // UIKit calls the expiration handler on the main thread.
-        identifier = UIApplication.shared.beginBackgroundTask(withName: "Rollaway.flushProgress") { [weak self] in
-            self?.end()
-        }
-        Task {
-            await work()
-            end()
+        func end() {
+            guard identifier != .invalid else { return }
+            UIApplication.shared.endBackgroundTask(identifier)
+            identifier = .invalid
         }
     }
 
-    private func end() {
-        guard identifier != .invalid else { return }
-        UIApplication.shared.endBackgroundTask(identifier)
-        identifier = .invalid
+    func run(_ work: @escaping () async -> Void) {
+        let ticket = Ticket()
+        // UIKit calls the expiration handler on the main thread.
+        ticket.identifier = UIApplication.shared.beginBackgroundTask(withName: "Rollaway.flushProgress") {
+            ticket.end()
+        }
+        Task {
+            await work()
+            ticket.end()
+        }
     }
 }

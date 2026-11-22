@@ -34,7 +34,7 @@ struct PhotoCleanerApp: App {
               ["YES", "yes", "true", "1"].contains(args[index + 1]) else { return }
         let store = ProgressStore()
         try? FileManager.default.removeItem(at: store.fileURL)
-        try? FileManager.default.removeItem(at: store.corruptFileURL)
+        for url in store.quarantinedFileURLs { try? FileManager.default.removeItem(at: url) }
         UserDefaults.standard.removeObject(forKey: DefaultsKey.onboardingComplete)
         UserDefaults.standard.removeObject(forKey: DefaultsKey.reviewRequested)
         #endif

@@ -13,6 +13,7 @@ final class FakePhotoLibrary: PhotoLibraryProviding {
     /// Suspension points that let a test hold a Photos write in flight.
     var beforeFavorite: (@MainActor (_ id: String, _ value: Bool) async -> Void)?
     var beforeDelete: (@MainActor (_ ids: [String]) async -> Void)?
+    var beforeFetch: (@MainActor () async -> Void)?
     private(set) var deleteCalls: [[String]] = []
     private(set) var favoriteCalls: [(id: String, value: Bool)] = []
     private(set) var cachedIDs: [String] = []
@@ -34,6 +35,7 @@ final class FakePhotoLibrary: PhotoLibraryProviding {
     func requestAuthorization() async -> LibraryAccess { accessLevel }
     func fetchItems() async -> [MediaItem] {
         fetchCount += 1
+        await beforeFetch?()
         return items.filter { !hiddenFromFetch.contains($0.id) }
     }
     func image(for id: String, targetSize: CGSize) async -> UIImage? { nil }

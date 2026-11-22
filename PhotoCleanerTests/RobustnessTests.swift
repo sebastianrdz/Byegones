@@ -8,64 +8,109 @@ private struct Boom: Error {}
 
 @Suite("Progress file robustness")
 struct ProgressFileRobustnessTests {
+    private func write(_ text: String, to store: ProgressStore) throws {
+        try FileManager.default.createDirectory(at: store.fileURL.deletingLastPathComponent(), withIntermediateDirectories: true)
+        try Data(text.utf8).write(to: store.fileURL)
+    }
+
+    private func quarantined(_ store: ProgressStore) throws -> [String] {
+        try store.quarantinedFileURLs.map { try String(contentsOf: $0, encoding: .utf8) }
+    }
+
     @Test func corruptFileIsMovedAsideNotOverwritten() async throws {
         let store = Fixture.tempStore()
-        try FileManager.default.createDirectory(at: store.fileURL.deletingLastPathComponent(), withIntermediateDirectories: true)
-        try Data("not json at all".utf8).write(to: store.fileURL)
+        try write("not json at all", to: store)
 
         #expect(store.load() == ProgressData())
         #expect(!FileManager.default.fileExists(atPath: store.fileURL.path))
-        #expect(try Data(contentsOf: store.corruptFileURL) == Data("not json at all".utf8))
-        #expect(store.corruptFileURL.lastPathComponent == "progress.corrupt.json")
+        #expect(try quarantined(store) == ["not json at all"])
+        let name = try #require(store.quarantinedFileURLs.first?.lastPathComponent)
+        #expect(name.hasPrefix("progress.corrupt-") && name.hasSuffix(".json"))
 
         // A later save writes a fresh file and leaves the evidence alone.
         try store.save(ProgressData(reviewedIDs: ["a"]))
         #expect(store.load().reviewedIDs == ["a"])
-        #expect(try Data(contentsOf: store.corruptFileURL) == Data("not json at all".utf8))
+        #expect(try quarantined(store) == ["not json at all"])
     }
 
-    @Test func aSecondCorruptFileReplacesTheFirstQuarantineCopy() throws {
+    @Test func aSecondCorruptionKeepsTheFirstQuarantinedCopy() throws {
         let store = Fixture.tempStore()
-        try FileManager.default.createDirectory(at: store.fileURL.deletingLastPathComponent(), withIntermediateDirectories: true)
-        try Data("first".utf8).write(to: store.fileURL)
+        try write("first", to: store)
         _ = store.load()
-        try Data("second".utf8).write(to: store.fileURL)
+        try write("second", to: store)
         _ = store.load()
-        #expect(try Data(contentsOf: store.corruptFileURL) == Data("second".utf8))
+        // Newest first; the first copy is still there.
+        let kept = try quarantined(store)
+        #expect(kept == ["second", "first"])
     }
 
-    @Test func missingFileLoadsEmptyAndCreatesNoQuarantineFile() {
+    @Test func onlyTheLastThreeQuarantinedCopiesAreKept() throws {
+        let store = Fixture.tempStore()
+        for n in 1...5 {
+            try write("copy-\(n)", to: store)
+            _ = store.load()
+        }
+        let kept = try quarantined(store)
+        #expect(kept == ["copy-5", "copy-4", "copy-3"])
+    }
+
+    @Test func missingFileLoadsEmptyAndQuarantinesNothing() {
         let store = Fixture.tempStore()
         #expect(store.load() == ProgressData())
-        #expect(!FileManager.default.fileExists(atPath: store.corruptFileURL.path))
+        #expect(store.quarantinedFileURLs.isEmpty)
+    }
+
+    @Test func ifTheFileCannotBeMovedAsideSavingIsRefusedAndTheOriginalSurvives() async throws {
+        struct NoMove: Error {}
+        let base = Fixture.tempStore()
+        let store = ProgressStore(fileURL: base.fileURL, move: { _, _ in throw NoMove() })
+        try write("unreadable original", to: store)
+
+        #expect(store.load() == ProgressData())
+        #expect(throws: ProgressStore.StoreError.unreadableFileKept) { try store.save(ProgressData(reviewedIDs: ["x"])) }
+        #expect(try String(contentsOf: store.fileURL, encoding: .utf8) == "unreadable original")
+
+        // Through a session: the failed save is logged, the file stays.
+        let library = FakePhotoLibrary(items: [MediaItem(id: "0"), MediaItem(id: "1")])
+        let session = SwipeSession(library: library, store: store)
+        await session.load()
+        session.keep()
+        await session.flush()
+        #expect(try String(contentsOf: store.fileURL, encoding: .utf8) == "unreadable original")
     }
 
     @Test func sessionStartedOnCorruptFileKeepsTheBadFileAfterSaving() async throws {
         let store = Fixture.tempStore()
-        try FileManager.default.createDirectory(at: store.fileURL.deletingLastPathComponent(), withIntermediateDirectories: true)
-        try Data("garbage".utf8).write(to: store.fileURL)
+        try write("garbage", to: store)
         let library = FakePhotoLibrary(items: [MediaItem(id: "0"), MediaItem(id: "1")])
         let session = SwipeSession(library: library, store: store)
         await session.load()
         session.keep()
         await session.flush()
         #expect(store.load().reviewedIDs == ["0"])
-        #expect(try Data(contentsOf: store.corruptFileURL) == Data("garbage".utf8))
+        #expect(try quarantined(store) == ["garbage"])
+    }
+
+    @Test(arguments: ["{}", #"{"reviewed":["a"],"pending":["b"],"freed":5}"#, #"{"futureField":{"x":1}}"#])
+    func aFileWithNoRecognisedKeysIsQuarantinedNotTreatedAsEmptyProgress(json: String) throws {
+        let store = Fixture.tempStore()
+        try write(json, to: store)
+        #expect(store.load() == ProgressData())
+        #expect(!FileManager.default.fileExists(atPath: store.fileURL.path))
+        #expect(try quarantined(store) == [json])
     }
 
     @Test(arguments: [
         (#"{"reviewedIDs":["a"]}"#, ProgressData(reviewedIDs: ["a"])),
         (#"{"pendingTrashIDs":["p","q"]}"#, ProgressData(pendingTrashIDs: ["p", "q"])),
         (#"{"bytesFreed":99}"#, ProgressData(bytesFreed: 99)),
-        (#"{"reviewedIDs":["a"],"bytesFreed":5}"#, ProgressData(reviewedIDs: ["a"], bytesFreed: 5)),
-        ("{}", ProgressData()),
+        (#"{"reviewedIDs":["a"],"bytesFreed":5,"futureField":1}"#, ProgressData(reviewedIDs: ["a"], bytesFreed: 5)),
     ])
-    func missingFieldsDecodeToDefaultsWithoutLosingTheRest(json: String, expected: ProgressData) throws {
+    func missingIndividualKeysDecodeToDefaultsWithoutLosingTheRest(json: String, expected: ProgressData) throws {
         let store = Fixture.tempStore()
-        try FileManager.default.createDirectory(at: store.fileURL.deletingLastPathComponent(), withIntermediateDirectories: true)
-        try Data(json.utf8).write(to: store.fileURL)
+        try write(json, to: store)
         #expect(store.load() == expected)
-        #expect(!FileManager.default.fileExists(atPath: store.corruptFileURL.path))
+        #expect(store.quarantinedFileURLs.isEmpty)
     }
 }
 
@@ -209,6 +254,84 @@ struct CommitGuardTests {
     }
 }
 
+@Suite("Rescue then delete")
+struct RescueThenDeleteTests {
+    /// The trash sheet untrashes the moment a cell is tapped, so a Delete tapped right after
+    /// batches exactly what is left in the pile.
+    @Test func anItemRescuedJustBeforeDeleteIsNotInTheBatch() async {
+        let f = await Fixture.make()
+        f.session.trash()
+        f.session.trash()
+        f.session.trash()
+        f.session.untrash("1")
+        async let commit = f.session.commitTrash()
+        let outcome = await commit
+        guard case .deleted(let count, _) = outcome else {
+            Issue.record("expected .deleted, got \(outcome)")
+            return
+        }
+        #expect(count == 2)
+        #expect(f.library.deleteCalls == [["0", "2"]])
+        #expect(f.library.items.map(\.id).contains("1"))
+    }
+
+    @Test func aRescueAfterTheBatchWasCapturedIsRefusedSoNothingClaimsToHaveRescuedIt() async {
+        let f = await Fixture.make()
+        f.session.trash()
+        f.session.trash()
+        let gate = Gate()
+        f.library.beforeDelete = { _ in await gate.wait() }
+        async let commit = f.session.commitTrash()
+        await gate.untilWaiting()
+        // The view disables the cells while deleting, and the session refuses as a backstop.
+        let before = f.session.pendingTrash.map(\.id)
+        f.session.untrash("0")
+        #expect(f.session.pendingTrash.map(\.id) == before)
+        #expect(!f.session.reviewedIDs.contains("0"))
+        gate.open()
+        _ = await commit
+        #expect(f.library.deleteCalls == [["0", "1"]])
+    }
+}
+
+@Suite("Reload coalescing")
+struct ReloadCoalescingTests {
+    @Test func reloadsRequestedDuringALoadRunExactlyOneMoreLoad() async {
+        let f = await Fixture.make()
+        let gate = Gate()
+        f.library.beforeFetch = { await gate.wait() }
+        let base = f.library.fetchCount
+
+        async let first: Void = f.session.load()
+        await gate.untilWaiting()
+        // Three triggers while the load is running (picker, foreground, reloadIfNeeded).
+        f.library.items.insert(MediaItem(id: "late"), at: 0)
+        f.library.changeRevision += 1
+        await f.session.load()
+        await f.session.load()
+        await f.session.reloadIfNeeded()
+        gate.open()
+        await first
+
+        #expect(f.library.fetchCount == base + 2)   // the running load plus exactly one more
+        #expect(f.session.queue.first?.id == "late")
+    }
+
+    @Test func resetProgressDuringALoadStillReloadsAfterward() async {
+        let f = await Fixture.make()
+        f.session.keep()
+        let gate = Gate()
+        f.library.beforeFetch = { await gate.wait() }
+        async let running: Void = f.session.load()
+        await gate.untilWaiting()
+        async let reset: Void = f.session.resetProgress()
+        gate.open()
+        _ = await (running, reset)
+        #expect(f.session.reviewedIDs.isEmpty)
+        #expect(f.session.queue.map(\.id) == ["0", "1", "2", "3", "4"])
+    }
+}
+
 @Suite("Failed favorite")
 struct FailedFavoriteTests {
     @Test func failedFavoritePostsANoticeAndBecomesAPlainKeep() async {
@@ -345,5 +468,60 @@ struct AccessAnswerTests {
         await session.start()
         #expect(session.access == .authorized)
         #expect(session.current?.id == "0")
+    }
+}
+
+@Suite("Leaver watchdog")
+struct LeaverWatchdogTests {
+    /// Without a window there may be no animation completion at all (the same situation as a lost
+    /// completion on screen). The watchdog must still remove the leaver, and must not disturb the
+    /// state the decision already produced.
+    @Test func aLeaverNeverOutlivesTheWatchdog() async throws {
+        let f = await Fixture.make()
+        let controller = CardController(session: f.session)
+        controller.perform(.keep)
+        try await Task.sleep(for: .milliseconds(300))
+        #expect(f.session.current?.id == "1")   // the decision itself was applied immediately
+        try await Task.sleep(for: .milliseconds(1700))
+        #expect(controller.leavers.isEmpty)
+        #expect(f.session.reviewedIDs == ["0"])
+        #expect(f.session.current?.id == "1")
+    }
+
+    @Test func theWatchdogOfAnOlderFlightDoesNotRemoveANewerLeaverOfTheSameCard() async throws {
+        let f = await Fixture.make()
+        let controller = CardController(session: f.session)
+        controller.perform(.keep)
+        try await Task.sleep(for: .milliseconds(200))
+        controller.undo()
+        try await Task.sleep(for: .milliseconds(200))
+        controller.perform(.trash)           // the same card flies out again
+        try await Task.sleep(for: .milliseconds(1400))
+        // The first flight's watchdog has fired by now; it must not have touched the second one's
+        // bookkeeping, and everything is gone once the second flight's own watchdog has fired.
+        try await Task.sleep(for: .milliseconds(900))
+        #expect(controller.leavers.isEmpty)
+        #expect(f.session.pendingTrash.map(\.id) == ["0"])
+    }
+}
+
+@Suite("Background flush")
+struct BackgroundFlushTests {
+    final class Counter { var finished = 0 }
+
+    /// Each run owns its background task. Overlapping runs (background, foreground, background
+    /// again) must each finish their work without one ending the other's time.
+    @Test func overlappingRunsEachCompleteTheirOwnWork() async {
+        let flush = BackgroundFlush()
+        let counter = Counter()
+        let gate = Gate()
+        flush.run { await gate.wait(); counter.finished += 1 }
+        flush.run { await gate.wait(); counter.finished += 1 }
+        flush.run { counter.finished += 1 }   // finishes first, while the others are still running
+        await gate.untilWaiting()
+        #expect(counter.finished == 1)
+        gate.open()
+        for _ in 0..<200 where counter.finished < 3 { try? await Task.sleep(for: .milliseconds(10)) }
+        #expect(counter.finished == 3)
     }
 }

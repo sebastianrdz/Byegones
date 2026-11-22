@@ -36,7 +36,10 @@ struct ScreenshotMode: Sendable {
 
     let scene: Scene
 
+    /// Debug builds only: `scripts/screenshots.sh` builds Debug, so a shipped (Release) app has no
+    /// screenshot mode at all.
     static let current: ScreenshotMode? = {
+        #if DEBUG
         let args = ProcessInfo.processInfo.arguments
         func value(after flag: String) -> String? {
             guard let index = args.firstIndex(of: flag), args.indices.contains(index + 1) else { return nil }
@@ -45,5 +48,8 @@ struct ScreenshotMode: Sendable {
         guard let flag = value(after: "-screenshotMode"), ["YES", "yes", "true", "1"].contains(flag) else { return nil }
         let scene = value(after: "-screenshotScene").flatMap(Scene.init(rawValue:)) ?? .swipe
         return ScreenshotMode(scene: scene)
+        #else
+        return nil
+        #endif
     }()
 }

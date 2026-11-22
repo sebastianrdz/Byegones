@@ -67,6 +67,8 @@ final class CardController {
     @ObservationIgnored private var pendingTask: Task<Void, Never>?
 
     private static let maxLeavers = 3
+    /// Far longer than any fly-off (about 0.3 s), short enough that a ghost card is not noticed.
+    private static let leaverWatchdog = Duration.milliseconds(1500)
 
     init(session: SwipeSession) {
         self.session = session
@@ -235,6 +237,13 @@ final class CardController {
             stampProgress = 0
             movingOpacity = 1
         } completion: { [self] in
+            dropLeaver(id: id, generation: serial)
+        }
+        // Watchdog: the leaver is normally removed by the completion above. If that completion is
+        // ever lost, a ghost card would stay on screen and the empty state would never show, so
+        // remove it by (id, generation) after a while. A no-op when the completion already ran.
+        Task { [self] in
+            try? await Task.sleep(for: Self.leaverWatchdog)
             dropLeaver(id: id, generation: serial)
         }
     }

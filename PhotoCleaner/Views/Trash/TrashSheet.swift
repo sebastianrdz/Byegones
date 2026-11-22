@@ -21,7 +21,6 @@ struct TrashSheet: View {
     private struct RemovedToast { let item: MediaItem; let index: Int }
 
     @State private var phase = Phase.idle
-    @State private var removing: Set<String> = []
     @State private var toast: RemovedToast?
     @State private var toastTask: Task<Void, Never>?
     @State private var selectionTick = 0
@@ -106,8 +105,7 @@ struct TrashSheet: View {
     }
 
     private func cell(_ item: MediaItem) -> some View {
-        let isRemoving = removing.contains(item.id)
-        return Button { remove(item) } label: {
+        Button { remove(item) } label: {
             ThumbnailView(item: item, library: session.library)
                 .aspectRatio(1, contentMode: .fit)
                 .clipShape(RoundedRectangle(cornerRadius: Radius.cell, style: .continuous))
@@ -117,9 +115,8 @@ struct TrashSheet: View {
                 .contentShape(RoundedRectangle(cornerRadius: Radius.cell, style: .continuous))
         }
         .buttonStyle(.plain)
-        // Reduce Motion: fade only, no shrink.
-        .scaleEffect(isRemoving && !reduceMotion ? 0.8 : 1)
-        .opacity(isRemoving ? 0 : 1)
+        // Leaving the pile: shrink to 0.8 and fade over 0.2 s (Reduce Motion: fade only).
+        .transition(reduceMotion ? .opacity : .scale(scale: 0.8).combined(with: .opacity))
         .accessibilityLabel(Text(Strings.cardA11y(item: item)))
         .accessibilityHint(Text("trash.item.a11y"))
     }
@@ -237,24 +234,22 @@ struct TrashSheet: View {
 
     // MARK: Actions
 
+    /// Takes the item out of the pile in the session at once; the shrink and fade is only the
+    /// removal transition. Nothing is pending after the tap, so Delete can never batch an item
+    /// the person has just rescued.
     private func remove(_ item: MediaItem) {
-        guard !removing.contains(item.id),
+        guard !session.isCommitting,
               let index = session.pendingTrash.firstIndex(where: { $0.id == item.id }) else { return }
         selectionTick += 1
-        withAnimation(.easeOut(duration: reduceMotion ? 0.18 : 0.2)) { _ = removing.insert(item.id) }
-        Task {
-            try? await Task.sleep(for: .milliseconds(200))
-            withAnimation(reduceMotion ? .easeOut(duration: 0.18) : .snappy) {
-                session.untrash(item.id)
-                removing.remove(item.id)
-                toast = RemovedToast(item: item, index: index)
-            }
-            toastTask?.cancel()
-            toastTask = Task {
-                try? await Task.sleep(for: .seconds(4))
-                guard !Task.isCancelled else { return }
-                withAnimation(.easeOut(duration: 0.2)) { toast = nil }
-            }
+        withAnimation(.easeOut(duration: reduceMotion ? 0.18 : 0.2)) {
+            session.untrash(item.id)
+            toast = RemovedToast(item: item, index: index)
+        }
+        toastTask?.cancel()
+        toastTask = Task {
+            try? await Task.sleep(for: .seconds(4))
+            guard !Task.isCancelled else { return }
+            withAnimation(.easeOut(duration: 0.2)) { toast = nil }
         }
     }
 

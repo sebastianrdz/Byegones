@@ -148,22 +148,29 @@ class RollawayUITestCase: XCTestCase {
         app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Photo,' OR label BEGINSWITH 'Video,'"))
     }
 
-    /// Accepts the real iOS delete confirmation ("Delete N Photos"). It is hosted outside the app,
-    /// so it is looked up on springboard first and in the app as a fallback.
-    @discardableResult
-    func confirmSystemDelete(timeout: TimeInterval = 10) -> Bool {
+    /// Finds the real iOS delete confirmation's button ("Delete N Photos"). It is hosted outside the
+    /// app, so it is looked up on springboard first and in the app as a fallback.
+    func systemDeleteButton(timeout: TimeInterval = 10) -> XCUIElement? {
         let deadline = Date().addingTimeInterval(timeout)
         let isDelete = NSPredicate(format: "label BEGINSWITH 'Delete'")
         repeat {
             for host in [springboard, app] {
                 let button = host.alerts.buttons.matching(isDelete).firstMatch
-                if button.exists { button.tap(); return true }
+                if button.exists { return button }
                 let sheetButton = host.sheets.buttons.matching(isDelete).firstMatch
-                if sheetButton.exists { sheetButton.tap(); return true }
+                if sheetButton.exists { return sheetButton }
             }
             usleep(200_000)
         } while Date() < deadline
-        return false
+        return nil
+    }
+
+    /// Accepts the real iOS delete confirmation.
+    @discardableResult
+    func confirmSystemDelete(timeout: TimeInterval = 10) -> Bool {
+        guard let button = systemDeleteButton(timeout: timeout) else { return false }
+        button.tap()
+        return true
     }
 
     /// Declines the system delete confirmation ("Allow Rollaway to delete 2 photos?" > "Don't Allow").

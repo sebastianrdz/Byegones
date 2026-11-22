@@ -69,6 +69,7 @@ final class SwipeSession {
     /// "not determined" after the system prompt was answered; until it catches up, the answer wins.
     @ObservationIgnored private var requestedAccess: LibraryAccess?
     @ObservationIgnored private var loadedRevision = -1
+    @ObservationIgnored private var reloadRequested = false
     @ObservationIgnored private var noticeSerial = 0
 
     // Photos favorite writes run in order, off the gesture path.
@@ -116,18 +117,32 @@ final class SwipeSession {
     }
 
     /// Fetches the library and rebuilds the queue and the trash pile.
+    ///
+    /// A call made while a load is running does not start a second one: it records that another
+    /// pass is wanted, and the running load performs exactly one more pass when it finishes, so
+    /// picker, foreground and reset triggers are never lost.
     func load() async {
-        guard !isLoading else { return }
+        guard !isLoading else {
+            reloadRequested = true
+            return
+        }
         isLoading = true
         defer { isLoading = false }
+        repeat {
+            reloadRequested = false
+            await performLoad()
+        } while reloadRequested
+    }
 
+    private func performLoad() async {
         access = resolvedAccess()
         guard access.canRead else {
             queue = []
             return
         }
 
-        // Read before fetching, so a change that lands mid-fetch triggers another reload.
+        // Read before fetching: a change that lands mid-fetch leaves `loadedRevision` behind, so the
+        // next `reloadIfNeeded()` fetches again.
         let revision = library.changeRevision
         let items = await library.fetchItems()
         let byID = Dictionary(items.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
