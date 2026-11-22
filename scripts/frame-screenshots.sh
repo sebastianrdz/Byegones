@@ -12,7 +12,7 @@ W=1320; H=2868
 TEMPLATE="$ROOT/marketing/frames/template.html"
 
 # Listing order -> raw scene.
-SCENE_FOR=(swipe trash undo favorite onboarding celebration)
+SCENE_FOR=(swipe trash undo favorite privacy celebration)
 caps_en=("Swipe. Keep. Delete. Done." "See what you'll clear" "Oops? Undo it" "Swipe up to favorite ★" "Private. On your iPhone." "Nice work. Pile cleared!")
 caps_es=("Desliza, guarda, borra" "Mira cuánto vas a limpiar" "¿Te arrepientes? Deshaz" "Arriba para favoritas ★" "Privado, en tu iPhone" "¡Buen trabajo! Pila lista")
 

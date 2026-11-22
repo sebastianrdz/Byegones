@@ -1,4 +1,4 @@
-// Generates license-free abstract "landscape" JPEGs (no EXIF, no real photos).
+// Generates license-free (pastel landscapes with film grain, ~2.5-5 MB each) abstract "landscape" JPEGs (no EXIF, no real photos).
 // Usage: swift scripts/make-sample-photos.swift <outDir> [count]
 import CoreGraphics
 import Foundation
@@ -54,10 +54,34 @@ for i in 0..<count {
         ctx.setFillColor(hsb(base + 0.45 + t * 0.1, 0.35 + t * 0.2, 0.75 - t * 0.45))
         ctx.fillPath()
     }
+    // Fine detail: thousands of small translucent strokes (grass/foliage-like texture), still abstract.
+    let strokes = Int.random(in: 14000...26000, using: &rng)
+    for _ in 0..<strokes {
+        let x = CGFloat.random(in: 0...CGFloat(w), using: &rng), y = CGFloat.random(in: 0...1900, using: &rng)
+        let len = CGFloat.random(in: 8...40, using: &rng), ang = CGFloat.random(in: 1.2...1.9, using: &rng)
+        ctx.setStrokeColor(hsb(base + CGFloat.random(in: 0.35...0.6, using: &rng), 0.4, CGFloat.random(in: 0.2...0.7, using: &rng)).copy(alpha: 0.18)!)
+        ctx.setLineWidth(CGFloat.random(in: 2...5, using: &rng))
+        ctx.move(to: CGPoint(x: x, y: y)); ctx.addLine(to: CGPoint(x: x + cos(ang) * len, y: y + sin(ang) * len)); ctx.strokePath()
+    }
+    // Film grain: per-pixel luminance noise, strength varies per image.
+    if let data = ctx.data {
+        let px = data.bindMemory(to: UInt8.self, capacity: ctx.bytesPerRow * h)
+        let amp = Int.random(in: 4...9, using: &rng)
+        var st = UInt64(i + 1) &* 0x2545F4914F6CDD1D
+        for row in 0..<h {
+            let base = row * ctx.bytesPerRow
+            for col in 0..<w {
+                st ^= st << 13; st ^= st >> 7; st ^= st << 17
+                let n = Int(st & 0xFF) % (2 * amp + 1) - amp
+                let o = base + col * 4
+                for c in 0..<3 { px[o + c] = UInt8(max(0, min(255, Int(px[o + c]) + n))) }
+            }
+        }
+    }
     let img = ctx.makeImage()!
     let url = outDir.appendingPathComponent(String(format: "sample-%02d.jpg", i + 1))
     let dest = CGImageDestinationCreateWithURL(url as CFURL, UTType.jpeg.identifier as CFString, 1, nil)!
-    CGImageDestinationAddImage(dest, img, [kCGImageDestinationLossyCompressionQuality: 0.8] as CFDictionary)
+    CGImageDestinationAddImage(dest, img, [kCGImageDestinationLossyCompressionQuality: 0.9] as CFDictionary)
     guard CGImageDestinationFinalize(dest) else { exit(1) }
     // Varied dates: spread across ~2 years via file timestamps.
     let daysAgo = Double(i) * 19 + Double.random(in: 0...10, using: &rng)
