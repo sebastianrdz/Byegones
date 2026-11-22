@@ -16,7 +16,14 @@ SCENE_FOR=(swipe trash undo favorite privacy celebration)
 caps_en=("Swipe. Keep. Delete. Done." "See what you'll clear" "Oops? Undo it" "Swipe up to favorite ★" "Private. On your iPhone." "Nice work. Pile cleared!")
 caps_es=("Desliza, guarda, borra" "Mira cuánto vas a limpiar" "¿Te arrepientes? Deshaz" "Arriba para favoritas ★" "Privado, en tu iPhone" "¡Buen trabajo! Pila lista")
 
-urlenc() { python3 -c 'import sys,urllib.parse; print(urllib.parse.quote(sys.argv[1], safe=""))' "$1"; }
+urlenc() { # percent-encode every byte that is not unreserved (pure bash, byte-wise)
+  local LC_ALL=C s="$1" out="" c i
+  for ((i = 0; i < ${#s}; i++)); do
+    c="${s:i:1}"
+    case "$c" in [a-zA-Z0-9.~_-]) out+="$c" ;; *) out+="$(printf '%%%02X' "'$c")" ;; esac
+  done
+  printf '%s\n' "$out"
+}
 
 for lang in en es; do
   mkdir -p "marketing/screenshots/$lang"

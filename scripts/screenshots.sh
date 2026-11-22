@@ -64,15 +64,10 @@ TEST_RUNNER_BUNDLE_ID="$BUNDLE_ID" xcodebuild test -project scripts/grant-photos
 xcrun simctl terminate "$UDID" "$BUNDLE_ID" 2>/dev/null || true
 
 # A frame is "blank" when the app area is (almost) one flat colour, e.g. a launch screen captured too early.
-is_blank() {
-  python3 -c '
-import sys
-from PIL import Image
-im = Image.open(sys.argv[1]).convert("RGB")
-w, h = im.size
-band = im.crop((0, int(h * 0.15), w, int(h * 0.85))).resize((220, 480))
-sys.exit(0 if len(set(band.getdata())) < 40 else 1)' "$1"
-}
+# Checked by a tiny CoreGraphics tool compiled into build/wp8-tools (no third-party dependencies).
+mkdir -p build/wp8-tools
+swiftc -O scripts/is-blank.swift -o build/wp8-tools/is-blank
+is_blank() { build/wp8-tools/is-blank "$1"; }
 
 capture() { # lang scene file [launch-args...]
   local lang="$1" scene="$2" file="$3" attempt wait; shift 3
