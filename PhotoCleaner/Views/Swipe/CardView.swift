@@ -4,7 +4,9 @@ import SwiftUI
 /// One photo or video card. Role (front / next) and motion are applied by `CardStack`.
 struct CardView: View {
     let item: MediaItem
+    /// The front card, or a decided card still flying out. Both carry the chrome.
     let isTop: Bool
+    let isLeaving: Bool
     let session: SwipeSession
     let controller: CardController
     let store: CardImageStore
@@ -23,8 +25,8 @@ struct CardView: View {
     }
 
     private var shouldPlay: Bool {
-        isTop && item.kind == .video && scenePhase == .active
-            && controller.departing == nil && !controller.isDragging
+        isTop && !isLeaving && item.kind == .video && scenePhase == .active
+            && !controller.isDragging
             && (autoplayAllowed || userStartedVideo)
     }
 
@@ -39,8 +41,13 @@ struct CardView: View {
             if isTop { chrome }
         }
         .clipShape(shape)
-        .overlay { if isTop { stampOverlay } }
-        .shadow(color: .black.opacity(colorScheme == .dark ? 0.5 : 0.18), radius: 24, y: 10)
+        .overlay { if isTop { StampOverlay(controller: controller, leavingID: isLeaving ? item.id : nil) } }
+        // The shadow comes from a plain shape, so Core Animation can derive a cheap shadow path
+        // instead of blurring the whole photo composite on every frame of a drag.
+        .background {
+            shape.fill(Color.surface)
+                .shadow(color: .black.opacity(colorScheme == .dark ? 0.5 : 0.18), radius: 24, y: 10)
+        }
         .contentShape(shape)
         .onTapGesture { if item.kind == .video { toggleMute() } }
         .task { store.ensure(item) }
@@ -91,28 +98,6 @@ struct CardView: View {
         }
     }
 
-    private var stampOverlay: some View {
-        let progress = controller.stampProgress
-        return Group {
-            if let kind = controller.stampKind {
-                StampView(action: kind)
-                    .opacity(progress)
-                    .scaleEffect(0.88 + 0.12 * progress)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: stampAlignment(kind))
-                    .padding(28)
-            }
-        }
-        .allowsHitTesting(false)
-    }
-
-    private func stampAlignment(_ kind: DecisionAction) -> Alignment {
-        switch kind {
-        case .keep: .topLeading
-        case .trash: .topTrailing
-        case .favorite: .top
-        }
-    }
-
     // MARK: Chrome on the front card
 
     private var chrome: some View {
@@ -126,32 +111,13 @@ struct CardView: View {
     }
 
     private var metadata: some View {
-        let hidden = controller.stampProgress > 0.3
         let size = session.byteSize(of: item)
-        return VStack(alignment: .leading, spacing: Space.xxs) {
-            if let date = item.creationDate {
-                Text(date.formatted(date: .abbreviated, time: .omitted))
-                    .font(.subheadline.weight(.semibold))
-            }
-            if size != nil || item.kind == .video {
-                Text(metaLine(size: size))
-                    .font(.rounded(.footnote, weight: .medium))
-                    .monospacedDigit()
-                    .opacity(0.85)
-            }
-        }
-        .foregroundStyle(.white)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(Space.l)
-        .padding(.top, Space.xxl)
-        .background(alignment: .bottom) {
-            LinearGradient(colors: [.clear, Color.scrim], startPoint: .top, endPoint: .bottom)
-                .frame(height: 140)
-        }
-        .opacity(hidden ? 0 : 1)
-        .animation(.easeOut(duration: 0.15), value: hidden)
-        .allowsHitTesting(false)
-        .accessibilityHidden(true)
+        return CardMetadata(
+            controller: controller,
+            leavingID: isLeaving ? item.id : nil,
+            date: item.creationDate,
+            sizeLine: (size != nil || item.kind == .video) ? metaLine(size: size) : nil
+        )
     }
 
     private func metaLine(size: Int64?) -> String {
@@ -182,7 +148,7 @@ struct CardView: View {
                         .frame(width: 44, height: 44)
                         .glassSurface(in: Circle(), interactive: true)
                 }
-                .buttonStyle(PressScaleStyle())
+                .buttonStyle(PressScaleStyle(onInteractiveGlass: true))
                 .accessibilityLabel(Text(isMuted ? "swipe.video.unmute" : "swipe.video.mute"))
                 .accessibilityHint(Text("swipe.video.hint"))
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
@@ -253,5 +219,72 @@ struct CardView: View {
             try? await Task.sleep(for: .milliseconds(30))
             withAnimation(.easeOut(duration: 0.6)) { hintOpacity = 0 }
         }
+    }
+}
+
+
+/// KEEP / DELETE / FAVORITE stamp over the front card. Reads the stamp state itself, so a drag
+/// invalidates only this view, not the whole card.
+private struct StampOverlay: View {
+    let controller: CardController
+    /// Set for a card that is flying out: it shows its own stamp, not the front card's.
+    let leavingID: String?
+
+    var body: some View {
+        let stamp = controller.stamp(leaving: leavingID)
+        Group {
+            if let kind = stamp.kind {
+                StampView(action: kind)
+                    .opacity(stamp.progress)
+                    .scaleEffect(0.88 + 0.12 * stamp.progress)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: Self.alignment(kind))
+                    .padding(28)
+            }
+        }
+        .allowsHitTesting(false)
+    }
+
+    private static func alignment(_ kind: DecisionAction) -> Alignment {
+        switch kind {
+        case .keep: .topLeading
+        case .trash: .topTrailing
+        case .favorite: .top
+        }
+    }
+}
+
+/// Date and size over the bottom scrim. It fades out as the stamp comes in, tracking the same
+/// progress as the finger, so it needs no animation of its own.
+private struct CardMetadata: View {
+    let controller: CardController
+    let leavingID: String?
+    let date: Date?
+    let sizeLine: String?
+
+    var body: some View {
+        let progress = controller.stamp(leaving: leavingID).progress
+        VStack(alignment: .leading, spacing: Space.xxs) {
+            if let date {
+                Text(date.formatted(date: .abbreviated, time: .omitted))
+                    .font(.subheadline.weight(.semibold))
+            }
+            if let sizeLine {
+                Text(sizeLine)
+                    .font(.rounded(.footnote, weight: .medium))
+                    .monospacedDigit()
+                    .opacity(0.85)
+            }
+        }
+        .foregroundStyle(.white)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(Space.l)
+        .padding(.top, Space.xxl)
+        .background(alignment: .bottom) {
+            LinearGradient(colors: [.clear, Color.scrim], startPoint: .top, endPoint: .bottom)
+                .frame(height: 140)
+        }
+        .opacity(1 - min(1, progress / 0.3))
+        .allowsHitTesting(false)
+        .accessibilityHidden(true)
     }
 }

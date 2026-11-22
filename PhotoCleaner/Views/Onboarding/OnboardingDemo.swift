@@ -28,6 +28,9 @@ struct OnboardingDemo: View {
                     .overlay {
                         if let stamp {
                             StampView(action: stamp)
+                                // Reduce Motion swaps stamps by cross-fading, never by sliding.
+                                .id(stamp)
+                                .transition(reduceMotion ? .opacity : .identity)
                                 .opacity(stampProgress)
                                 .scaleEffect(0.88 + 0.12 * stampProgress)
                                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: alignment(stamp))
@@ -86,6 +89,13 @@ struct OnboardingDemo: View {
             rotation = 2.5
             return
         }
+        // Start every pass from the resting first frame: a page that is left mid-loop and
+        // revisited must not spring back from wherever it was cancelled.
+        var rest = Transaction(); rest.disablesAnimations = true
+        withTransaction(rest) {
+            offset = .zero; rotation = 0; stamp = nil; stampProgress = 0
+            cardOpacity = 1; cardScale = 1; caption = .keep
+        }
         if reduceMotion { await runStill(); return }
         let sequence: [DecisionAction] = [.keep, .trash, .favorite]
         try? await Task.sleep(for: .milliseconds(600))
@@ -132,7 +142,7 @@ struct OnboardingDemo: View {
 
     private func runStill() async {
         for action in [DecisionAction.keep, .trash, .favorite] {
-            withAnimation(.easeInOut(duration: 0.3)) {
+            withAnimation(.easeInOut(duration: 0.18)) {
                 caption = action
                 stamp = action
                 stampProgress = 1
@@ -140,7 +150,7 @@ struct OnboardingDemo: View {
             try? await Task.sleep(for: .milliseconds(2500))
             guard !Task.isCancelled else { return }
         }
-        withAnimation(.easeInOut(duration: 0.3)) { stamp = nil; stampProgress = 0 }
+        withAnimation(.easeInOut(duration: 0.18)) { stamp = nil; stampProgress = 0 }
     }
 }
 

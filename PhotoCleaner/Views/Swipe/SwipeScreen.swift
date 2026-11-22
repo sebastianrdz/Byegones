@@ -47,6 +47,9 @@ struct SwipeScreen: View {
             content
         }
         .background(Color.canvas.ignoresSafeArea())
+        // The empty state fades in once the last card has left; nothing else on this screen is
+        // animated by this modifier.
+        .animation(.easeOut(duration: reduceMotion ? 0.18 : 0.2), value: showsEmptyState)
         .sensoryFeedback(.impact(weight: .light), trigger: controller.thresholdTick)
         .sensoryFeedback(trigger: controller.haptic) { _, new in
             switch new.kind {
@@ -60,9 +63,9 @@ struct SwipeScreen: View {
         .onChange(of: reduceMotion, initial: true) { _, value in controller.reduceMotion = value }
         .onChange(of: session.queue.first?.id, initial: true) {
             let window = Array(session.queue.prefix(3))
-            // Cards that left the window stop downloading; the departing card keeps its image.
+            // Cards that left the window stop downloading; cards still flying out keep their image.
             var keep = Set(window.map(\.id))
-            if let departing = controller.departing { keep.insert(departing.id) }
+            for leaver in controller.leavers { keep.insert(leaver.id) }
             if let previous = session.history.last { keep.insert(previous.item.id) }
             store.prune(keeping: keep)
             for item in window { store.ensure(item) }
@@ -90,6 +93,10 @@ struct SwipeScreen: View {
 
     // MARK: Content
 
+    private var showsEmptyState: Bool {
+        session.hasLoaded && session.current == nil && controller.leavers.isEmpty
+    }
+
     @ViewBuilder
     private var content: some View {
         if !session.hasLoaded {
@@ -98,13 +105,15 @@ struct SwipeScreen: View {
                 .padding(.top, Space.m)
                 .padding(.bottom, Space.l)
             Spacer().frame(height: 72 + Space.m)
-        } else if session.current != nil {
+        } else if session.current != nil || !controller.leavers.isEmpty {
+            // The last card keeps flying out before the empty state takes over.
             // The toast sits at the top of the card so it never covers the date and size.
             cardArea
                 .overlay(alignment: .top) { toastView.padding(.top, Space.m + Space.l) }
             actionBar
         } else {
             EmptyStateView(session: session, onReviewTrash: { showTrash = true }, onOpenSettings: { showSettings = true })
+                .transition(.opacity)
         }
     }
 
@@ -128,7 +137,7 @@ struct SwipeScreen: View {
                 ActionButton(
                     symbol: "arrow.uturn.backward", glyphSize: 22, diameter: 56, color: .undoGlyph,
                     label: "swipe.button.undo.label", hint: "swipe.button.undo.hint",
-                    isEnabled: session.canUndo && !controller.isBusy, showsAsUsed: showsUndoAsUsed,
+                    isEnabled: session.canUndo, showsAsUsed: showsUndoAsUsed,
                     identifier: "swipe.action.undo"
                 ) { controller.undo() }
                 ActionButton(
@@ -166,7 +175,7 @@ struct SwipeScreen: View {
                     .glassSurface(in: Circle(), interactive: true)
                     .contentShape(Circle())
             }
-            .buttonStyle(PressScaleStyle())
+            .buttonStyle(PressScaleStyle(onInteractiveGlass: true))
             .accessibilityLabel(Text("settings.a11y.open"))
 
             Spacer(minLength: Space.s)
@@ -193,7 +202,9 @@ struct SwipeScreen: View {
             .font(.rounded(.subheadline, weight: .semibold))
             .monospacedDigit()
             .foregroundStyle(Color.ink)
-            .contentTransition(.numericText())
+            // The counter ticks on every swipe; it is not on the motion list, so it never animates
+            // (the card hand-over runs in an animated transaction that would otherwise cross-fade it).
+            .animation(nil, value: session.remainingCount)
             .padding(.horizontal, Space.l)
             .frame(minHeight: 36)
             .glassSurface(in: Capsule())
@@ -230,7 +241,7 @@ struct SwipeScreen: View {
             .glassSurface(in: Capsule(), interactive: true)
             .contentShape(Capsule())
         }
-        .buttonStyle(PressScaleStyle())
+        .buttonStyle(PressScaleStyle(onInteractiveGlass: true))
         .animation(.snappy, value: count)
         .accessibilityLabel(Text(Strings.trashPillA11y(count: count, bytes: bytes)))
         .accessibilityIdentifier("swipe.trashPill")

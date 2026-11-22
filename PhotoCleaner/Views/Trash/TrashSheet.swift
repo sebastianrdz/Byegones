@@ -15,6 +15,7 @@ struct TrashSheet: View {
 
     @Environment(\.dismiss) private var dismiss
     @Environment(\.dynamicTypeSize) private var typeSize
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private enum Phase { case idle, deleting, cancelled, failed }
     private struct RemovedToast { let item: MediaItem; let index: Int }
@@ -47,6 +48,11 @@ struct TrashSheet: View {
                 }
             }
             .background(Color.canvas)
+            // The toast floats over the grid. Inside the footer it would resize the scroll area
+            // every time it came and went.
+            .overlay(alignment: .bottom) {
+                if let toast { toastView(toast).padding(.bottom, Space.s) }
+            }
             .navigationTitle("trash.title")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -111,7 +117,8 @@ struct TrashSheet: View {
                 .contentShape(RoundedRectangle(cornerRadius: Radius.cell, style: .continuous))
         }
         .buttonStyle(.plain)
-        .scaleEffect(isRemoving ? 0.8 : 1)
+        // Reduce Motion: fade only, no shrink.
+        .scaleEffect(isRemoving && !reduceMotion ? 0.8 : 1)
         .opacity(isRemoving ? 0 : 1)
         .accessibilityLabel(Text(Strings.cardA11y(item: item)))
         .accessibilityHint(Text("trash.item.a11y"))
@@ -153,8 +160,6 @@ struct TrashSheet: View {
 
     private var footer: some View {
         VStack(spacing: Space.s) {
-            if let toast { toastView(toast) }
-
             switch phase {
             case .failed:
                 Label("error.delete.failed", systemImage: "exclamationmark.triangle.fill")
@@ -215,11 +220,10 @@ struct TrashSheet: View {
                 .foregroundStyle(Color.ink)
             Button("swipe.button.undo.label") {
                 toastTask?.cancel()
-                withAnimation(.snappy) {
+                withAnimation(reduceMotion ? .easeOut(duration: 0.18) : .snappy) {
                     session.restoreToTrash(toast.item, at: toast.index)
                     self.toast = nil
                 }
-                selectionTick += 1
             }
             .font(.subheadline.weight(.semibold))
             .foregroundStyle(Color.brand)
@@ -237,10 +241,10 @@ struct TrashSheet: View {
         guard !removing.contains(item.id),
               let index = session.pendingTrash.firstIndex(where: { $0.id == item.id }) else { return }
         selectionTick += 1
-        withAnimation(.easeOut(duration: 0.2)) { _ = removing.insert(item.id) }
+        withAnimation(.easeOut(duration: reduceMotion ? 0.18 : 0.2)) { _ = removing.insert(item.id) }
         Task {
             try? await Task.sleep(for: .milliseconds(200))
-            withAnimation(.snappy) {
+            withAnimation(reduceMotion ? .easeOut(duration: 0.18) : .snappy) {
                 session.untrash(item.id)
                 removing.remove(item.id)
                 toast = RemovedToast(item: item, index: index)

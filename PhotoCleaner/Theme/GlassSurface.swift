@@ -44,12 +44,32 @@ struct GlassGroup<Content: View>: View {
     }
 }
 
-/// Press feedback shared by every control: scale 0.94 on a short spring.
+/// Press feedback shared by every control: scale 0.94 on a short spring (0.1 s ease-out, no
+/// overshoot, with Reduce Motion).
+///
+/// Set `onInteractiveGlass` for a control whose surface is `glassSurface(interactive: true)`: on
+/// iOS 26 that glass already scales and bounces under the finger, so adding a second scale here
+/// would double the press. Without Liquid Glass (earlier iOS, Reduce Transparency, Increased
+/// Contrast) the surface is static and this style supplies the feedback.
 struct PressScaleStyle: ButtonStyle {
+    var onInteractiveGlass = false
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
+    @Environment(\.colorSchemeContrast) private var contrast
+
+    private var glassPressesItself: Bool {
+        guard onInteractiveGlass, !reduceTransparency, contrast != .increased else { return false }
+        if #available(iOS 26, *) { return true }
+        return false
+    }
+
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .scaleEffect(configuration.isPressed ? 0.94 : 1)
-            .animation(.spring(response: 0.25, dampingFraction: 0.8), value: configuration.isPressed)
+            .scaleEffect(configuration.isPressed && !glassPressesItself ? 0.94 : 1)
+            .animation(
+                reduceMotion ? .easeOut(duration: 0.1) : .spring(response: 0.25, dampingFraction: 0.8),
+                value: configuration.isPressed
+            )
     }
 }
 

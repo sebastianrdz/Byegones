@@ -30,7 +30,7 @@ struct ActionButton: View {
                 .scaleEffect(showsAsUsed ? 0.94 : 1)
                 .contentShape(Circle())
         }
-        .buttonStyle(PressScaleStyle())
+        .buttonStyle(PressScaleStyle(onInteractiveGlass: true))
         .disabled(!isEnabled)
         .opacity(isEnabled ? 1 : 0.35)
         .accessibilityLabel(Text(label))

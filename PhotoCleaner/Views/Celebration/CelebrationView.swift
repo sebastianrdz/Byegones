@@ -9,12 +9,26 @@ struct CelebrationView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.requestReview) private var requestReview
     @ScaledMetric(relativeTo: .largeTitle) private var heroSize = 72
-    @State private var startDate = Date.now
+    /// Nil until the cover has finished sliding in, so the count shows 0 until then.
+    @State private var startDate: Date?
     @State private var countUpFinished = false
+    @State private var confettiStarted = false
 
     private let countUpDuration = 0.9
+    /// The full-screen cover takes about this long to arrive. Motion that starts at `onAppear`
+    /// would play its first third behind the transition. Screenshots start at once.
+    private var entranceDelay: Double { isScreenshot ? 0 : 0.35 }
     /// Below 1 MB the item count is the headline (and for unknown sizes, which arrive as 0).
-    private var showsSize: Bool { summary.bytes >= 1_000_000 }
+    private var showsSize: Bool { bytes >= 1_000_000 }
+
+    /// The amount on screen. Debug builds accept `-celebrationBytes <n>` so the layout can be
+    /// checked at any size (33.5 MB, 1.24 GB) without deleting anything.
+    private var bytes: Int64 {
+        #if DEBUG
+        if let raw = UserDefaults.standard.string(forKey: "celebrationBytes"), let value = Int64(raw) { return value }
+        #endif
+        return summary.bytes
+    }
 
     var body: some View {
         VStack(spacing: Space.l) {
@@ -43,7 +57,7 @@ struct CelebrationView: View {
         }
         .frame(maxWidth: .infinity)
         .overlay(alignment: .top) {
-            if !reduceMotion { ConfettiBurst().padding(.top, 220) }
+            if !reduceMotion && confettiStarted { ConfettiBurst().padding(.top, 220) }
         }
         .safeAreaInset(edge: .bottom) {
             Button(action: onContinue) {
@@ -54,8 +68,10 @@ struct CelebrationView: View {
             .padding(.bottom, Space.m)
         }
         .background(Color.canvas.ignoresSafeArea())
-        .onAppear { startDate = .now }
         .task {
+            try? await Task.sleep(for: .seconds(entranceDelay))
+            confettiStarted = true
+            startDate = .now
             try? await Task.sleep(for: .seconds(countUpDuration + 0.1))
             countUpFinished = true
         }
@@ -67,15 +83,14 @@ struct CelebrationView: View {
     @ViewBuilder
     private var hero: some View {
         if showsSize {
-            let full = Strings.celebrationTitle(bytes: summary.bytes)
+            let full = Strings.celebrationTitle(bytes: bytes)
             TimelineView(.animation(paused: reduceMotion || countUpFinished)) { context in
-                Text(heroText(at: context.date))
-                    .font(.rounded(.title, weight: .bold))
-                    .foregroundStyle(Color.ink)
-                    .multilineTextAlignment(.center)
-                    .monospacedDigit()
-                    .lineLimit(3)
-                    .minimumScaleFactor(0.6)
+                // The final text is laid out invisibly underneath, so the line breaks, the scale
+                // factor and the centring are those of the end state from the first frame.
+                ZStack {
+                    heroLabel(progress: 1).hidden()
+                    heroLabel(progress: progress(at: context.date))
+                }
             }
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(Text(full))
@@ -89,19 +104,42 @@ struct CelebrationView: View {
         }
     }
 
-    private func heroText(at date: Date) -> AttributedString {
-        var progress = 1.0
-        if !reduceMotion {
-            let t = min(1, max(0, date.timeIntervalSince(startDate) / countUpDuration))
-            progress = 1 - pow(1 - t, 3)
+    /// The lead-in ("You cleared") on its own line above a one-line hero ("33.5 MB!"). The hero
+    /// scales down before it would ever wrap, so the number, its unit and the "!" never separate.
+    private func heroLabel(progress: Double) -> some View {
+        let parts = Self.heroParts(bytes: Int64(Double(bytes) * progress))
+        return VStack(spacing: Space.xs) {
+            if !parts.lead.isEmpty {
+                Text(parts.lead)
+                    .font(.rounded(.title2, weight: .semibold))
+                    .foregroundStyle(Color.ink)
+            }
+            Text(parts.hero)
+                .font(Font.system(size: heroSize, weight: .bold, design: .rounded).monospacedDigit())
+                .foregroundStyle(Color.ink)
+                .lineLimit(1)
+                .minimumScaleFactor(0.3)
         }
-        let shown = Int64(Double(summary.bytes) * progress)
-        let size = ByteFormat.string(shown)
-        var text = AttributedString(Strings.celebrationTitle(bytes: shown))
-        if let range = text.range(of: size) {
-            text[range].font = .system(size: heroSize, weight: .bold, design: .rounded)
-        }
-        return text
+        .multilineTextAlignment(.center)
+    }
+
+    /// Splits the localized title around the size: the words before it, and the size joined to
+    /// whatever follows it with a no-break space and a word joiner.
+    static func heroParts(bytes: Int64) -> (lead: String, hero: String) {
+        let size = ByteFormat.string(bytes)
+        let full = Strings.celebrationTitle(bytes: bytes)
+        guard let range = full.range(of: size) else { return ("", full) }
+        let lead = full[..<range.lowerBound].trimmingCharacters(in: .whitespaces)
+        let tail = full[range.upperBound...]
+        let unbroken = size.replacingOccurrences(of: " ", with: "\u{00A0}")
+        return (lead, tail.isEmpty ? unbroken : unbroken + "\u{2060}" + tail)
+    }
+
+    private func progress(at date: Date) -> Double {
+        if reduceMotion { return 1 }
+        guard let startDate else { return 0 }
+        let t = min(1, max(0, date.timeIntervalSince(startDate) / countUpDuration))
+        return 1 - pow(1 - t, 3)
     }
 
     // MARK: Review prompt
