@@ -173,7 +173,7 @@ final class CardController {
     // MARK: Undo
 
     func undo() {
-        guard !isBusy, let decision = session.history.last else { return }
+        guard !isBusy, session.canUndo, let decision = session.history.last else { return }
         isBusy = true
         let action = decision.action
         let sign: CGFloat = action == .keep ? 1 : -1
@@ -216,8 +216,8 @@ final class CardController {
             stampProgress = 0.92
             peek = 0.92
             switch action {
-            case .keep: offset = CGSize(width: 76, height: 14); rotation = 3.8
-            case .trash: offset = CGSize(width: -76, height: 14); rotation = -3.8
+            case .keep: offset = CGSize(width: 40, height: -6); rotation = 2.0
+            case .trash: offset = CGSize(width: -40, height: -6); rotation = -2.0
             case .favorite: offset = CGSize(width: 0, height: -64); rotation = 0
             }
         }

@@ -14,6 +14,8 @@ struct SwipeScreen: View {
     @State private var pendingCelebration: CelebrationSummary?
     @State private var limitedBannerDismissed = false
     @State private var showsUndoAsUsed = false
+    @State private var toast: SessionNotice?
+    @State private var toastTask: Task<Void, Never>?
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.displayScale) private var displayScale
@@ -57,7 +59,17 @@ struct SwipeScreen: View {
         }
         .onChange(of: reduceMotion, initial: true) { _, value in controller.reduceMotion = value }
         .onChange(of: session.queue.first?.id, initial: true) {
-            for item in session.queue.prefix(3) { store.ensure(item) }
+            let window = Array(session.queue.prefix(3))
+            // Cards that left the window stop downloading; the departing card keeps its image.
+            var keep = Set(window.map(\.id))
+            if let departing = controller.departing { keep.insert(departing.id) }
+            if let previous = session.history.last { keep.insert(previous.item.id) }
+            store.prune(keeping: keep)
+            for item in window { store.ensure(item) }
+        }
+        .onChange(of: session.notice) { _, notice in
+            guard let notice else { return }
+            showNotice(notice)
         }
         .sheet(isPresented: $showSettings) {
             SettingsView(session: session)
@@ -87,7 +99,9 @@ struct SwipeScreen: View {
                 .padding(.bottom, Space.l)
             Spacer().frame(height: 72 + Space.m)
         } else if session.current != nil {
+            // The toast sits at the top of the card so it never covers the date and size.
             cardArea
+                .overlay(alignment: .top) { toastView.padding(.top, Space.m + Space.l) }
             actionBar
         } else {
             EmptyStateView(session: session, onReviewTrash: { showTrash = true }, onOpenSettings: { showSettings = true })
@@ -114,19 +128,23 @@ struct SwipeScreen: View {
                 ActionButton(
                     symbol: "arrow.uturn.backward", glyphSize: 22, diameter: 56, color: .undoGlyph,
                     label: "swipe.button.undo.label", hint: "swipe.button.undo.hint",
-                    isEnabled: session.canUndo && !controller.isBusy, showsAsUsed: showsUndoAsUsed
+                    isEnabled: session.canUndo && !controller.isBusy, showsAsUsed: showsUndoAsUsed,
+                    identifier: "swipe.action.undo"
                 ) { controller.undo() }
                 ActionButton(
                     symbol: "xmark", glyphSize: 30, diameter: 72, color: .deleteGlyph,
-                    label: "swipe.button.delete.label", hint: "swipe.button.delete.hint"
+                    label: "swipe.button.delete.label", hint: "swipe.button.delete.hint",
+                    identifier: "swipe.action.delete"
                 ) { controller.perform(.trash) }
                 ActionButton(
                     symbol: "star.fill", glyphSize: 24, diameter: 56, color: .favoriteGlyph,
-                    label: "swipe.button.favorite.label", hint: "swipe.button.favorite.hint"
+                    label: "swipe.button.favorite.label", hint: "swipe.button.favorite.hint",
+                    identifier: "swipe.action.favorite"
                 ) { controller.perform(.favorite) }
                 ActionButton(
                     symbol: "checkmark", glyphSize: 30, diameter: 72, color: .keepGlyph,
-                    label: "swipe.button.keep.label", hint: "swipe.button.keep.hint"
+                    label: "swipe.button.keep.label", hint: "swipe.button.keep.hint",
+                    identifier: "swipe.action.keep"
                 ) { controller.perform(.keep) }
             }
         }
@@ -181,6 +199,7 @@ struct SwipeScreen: View {
             .glassSurface(in: Capsule())
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(Text(Strings.counterA11y(session.remainingCount)))
+            .accessibilityIdentifier("swipe.counter")
         }
     }
 
@@ -214,6 +233,41 @@ struct SwipeScreen: View {
         .buttonStyle(PressScaleStyle())
         .animation(.snappy, value: count)
         .accessibilityLabel(Text(Strings.trashPillA11y(count: count, bytes: bytes)))
+        .accessibilityIdentifier("swipe.trashPill")
+    }
+
+    // MARK: Notices
+
+    @ViewBuilder
+    private var toastView: some View {
+        if let toast {
+            Text(toast.kind == .favoriteFailed ? "error.favorite.failed" : "error.favorite.remove.failed")
+                .font(.subheadline)
+                .foregroundStyle(Color.ink)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, Space.l)
+                .padding(.vertical, Space.s + 2)
+                .frame(minHeight: 44)
+                .glassSurface(in: Capsule())
+                .padding(.horizontal, Space.l)
+                .transition(.opacity)
+                .accessibilityIdentifier("swipe.notice")
+        }
+    }
+
+    private func showNotice(_ notice: SessionNotice) {
+        withAnimation(.easeOut(duration: 0.2)) { toast = notice }
+        let text = notice.kind == .favoriteFailed
+            ? String(localized: "error.favorite.failed", defaultValue: "Couldn't add this to Favorites.")
+            : String(localized: "error.favorite.remove.failed", defaultValue: "Couldn't remove this from Favorites.")
+        AccessibilityNotification.Announcement(text).post()
+        toastTask?.cancel()
+        toastTask = Task {
+            try? await Task.sleep(for: .seconds(4))
+            guard !Task.isCancelled else { return }
+            withAnimation(.easeOut(duration: 0.2)) { toast = nil }
+            session.dismissNotice()
+        }
     }
 
     // MARK: Screenshot scenes
@@ -227,8 +281,18 @@ struct SwipeScreen: View {
         }
         guard session.hasLoaded else { return }
         switch screenshot.scene {
-        case .onboarding, .swipe:
+        case .onboarding, .privacy, .swipe:
             break
+        case .favoriteFailed:
+            // An item that is already a favorite writes nothing, so it could never fail.
+            var skipped = 0
+            while session.current?.isFavorite == true, skipped < 50 { session.keep(); skipped += 1 }
+            try? await Task.sleep(for: .milliseconds(500))
+            session.favorite()
+        case .deleteFailed:
+            for _ in 0..<8 { session.trash() }
+            try? await Task.sleep(for: .milliseconds(400))
+            showTrash = true
         case .keep:
             try? await Task.sleep(for: .milliseconds(600))
             controller.hold(.keep)

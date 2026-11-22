@@ -14,6 +14,7 @@ struct TrashSheet: View {
     let onDeleted: (CelebrationSummary) -> Void
 
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.dynamicTypeSize) private var typeSize
 
     private enum Phase { case idle, deleting, cancelled, failed }
     private struct RemovedToast { let item: MediaItem; let index: Int }
@@ -28,6 +29,10 @@ struct TrashSheet: View {
     @State private var explainerOpen = false
 
     private let columns = [GridItem(.adaptive(minimum: 100), spacing: 4)]
+
+    /// At accessibility sizes the footer cannot also hold the explainer: header, caption, grid and
+    /// info scroll together, and only the status and the Delete button stay pinned.
+    private var isAccessibilitySize: Bool { typeSize.isAccessibilitySize }
 
     private var count: Int { session.pendingTrash.count }
     private var bytes: Int64? { session.pendingTrashHasSizes ? session.pendingTrashBytes : nil }
@@ -51,12 +56,16 @@ struct TrashSheet: View {
             }
             .safeAreaInset(edge: .bottom, spacing: 0) { footer }
         }
-        .presentationDetents([.medium, .large])
+        .presentationDetents(isAccessibilitySize ? [.large] : [.medium, .large])
         .presentationDragIndicator(.visible)
         .presentationBackground(Color.canvas)
         .sensoryFeedback(.selection, trigger: selectionTick)
         .sensoryFeedback(.success, trigger: successTick)
         .sensoryFeedback(.error, trigger: errorTick)
+        .task {
+            // Screenshot scene: show the failed-delete state without anyone tapping.
+            if ScreenshotMode.current?.scene == .deleteFailed, phase == .idle { await commit() }
+        }
     }
 
     // MARK: Grid
@@ -77,6 +86,9 @@ struct TrashSheet: View {
                     ForEach(session.pendingTrash) { item in
                         cell(item)
                     }
+                }
+                if isAccessibilitySize && !session.pendingTrash.isEmpty {
+                    explainer.padding(.top, Space.m)
                 }
             }
             .padding(.horizontal, Space.l)
@@ -159,18 +171,7 @@ struct TrashSheet: View {
             }
 
             if !session.pendingTrash.isEmpty || phase == .deleting {
-                DisclosureGroup(isExpanded: $explainerOpen) {
-                    Text("trash.explainer.body")
-                        .font(.footnote)
-                        .foregroundStyle(Color.inkSecondary)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.top, Space.xs)
-                } label: {
-                    Text("trash.explainer.title")
-                        .font(.footnote)
-                        .foregroundStyle(Color.inkSecondary)
-                }
-                .tint(Color.inkSecondary)
+                if !isAccessibilitySize { explainer }
 
                 Button { Task { await commit() } } label: {
                     if phase == .deleting {
@@ -192,6 +193,21 @@ struct TrashSheet: View {
         .background(Color.canvas)
     }
 
+    private var explainer: some View {
+        DisclosureGroup(isExpanded: $explainerOpen) {
+            Text("trash.explainer.body")
+                .font(.footnote)
+                .foregroundStyle(Color.inkSecondary)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.top, Space.xs)
+        } label: {
+            Text("trash.explainer.title")
+                .font(.footnote)
+                .foregroundStyle(Color.inkSecondary)
+        }
+        .tint(Color.inkSecondary)
+    }
+
     private func toastView(_ toast: RemovedToast) -> some View {
         HStack(spacing: Space.m) {
             Text("trash.item.removed")
@@ -208,6 +224,7 @@ struct TrashSheet: View {
             .font(.subheadline.weight(.semibold))
             .foregroundStyle(Color.brand)
             .frame(minHeight: 44)
+            .disabled(session.isCommitting)
         }
         .padding(.horizontal, Space.l)
         .glassSurface(in: Capsule())

@@ -16,17 +16,22 @@ enum AppLinks {
     }
 }
 
+extension ScreenshotMode {
+    /// Scenes that show an error state make Photos writes fail instead of no-op.
+    var failsWrites: Bool { scene == .favoriteFailed || scene == .deleteFailed }
+}
+
 enum DefaultsKey {
     static let onboardingComplete = "hasCompletedOnboarding"
     static let reviewRequested = "hasRequestedReview"
 }
 
 /// Deterministic state for App Store screenshots. Enabled with
-/// `-screenshotMode YES -screenshotScene <onboarding|swipe|keep|favorite|undo|trash|celebration|settings>`.
+/// `-screenshotMode YES -screenshotScene <onboarding|privacy|swipe|keep|favorite|undo|trash|celebration|settings|favoriteFailed|deleteFailed>`.
 /// Never writes to Photos: favorite and delete are no-ops, and progress goes to a throwaway file.
 struct ScreenshotMode: Sendable {
     enum Scene: String, Sendable {
-        case onboarding, swipe, keep, favorite, undo, trash, celebration, settings
+        case onboarding, privacy, swipe, keep, favorite, undo, trash, celebration, settings, favoriteFailed, deleteFailed
     }
 
     let scene: Scene

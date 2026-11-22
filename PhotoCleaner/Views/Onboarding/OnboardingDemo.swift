@@ -81,8 +81,9 @@ struct OnboardingDemo: View {
             caption = .keep
             stamp = .keep
             stampProgress = 0.95
-            offset = CGSize(width: 70, height: 8)
-            rotation = 4
+            // Composed pose, fully on screen with margin on both sides.
+            offset = CGSize(width: 24, height: 4)
+            rotation = 2.5
             return
         }
         if reduceMotion { await runStill(); return }

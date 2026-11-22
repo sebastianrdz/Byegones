@@ -16,6 +16,12 @@ final class FakePhotoLibrary: PhotoLibraryProviding {
     private(set) var deleteCalls: [[String]] = []
     private(set) var favoriteCalls: [(id: String, value: Bool)] = []
     private(set) var cachedIDs: [String] = []
+    /// Bumped by tests to mimic Photos reporting a library change.
+    var changeRevision = 0
+    /// Items that exist but are left out of `fetchItems()` (a short or limited fetch).
+    var hiddenFromFetch: Set<String> = []
+    private(set) var fetchCount = 0
+    private(set) var byteSizeCalls = 0
 
     init(items: [MediaItem]) {
         self.items = items
@@ -26,12 +32,24 @@ final class FakePhotoLibrary: PhotoLibraryProviding {
     }
 
     func requestAuthorization() async -> LibraryAccess { accessLevel }
-    func fetchItems() async -> [MediaItem] { items }
+    func fetchItems() async -> [MediaItem] {
+        fetchCount += 1
+        return items.filter { !hiddenFromFetch.contains($0.id) }
+    }
     func image(for id: String, targetSize: CGSize) async -> UIImage? { nil }
     func playerItem(for id: String) async -> AVPlayerItem? { nil }
     func startCaching(ids: [String], targetSize: CGSize) { cachedIDs = ids }
     func stopCaching() { cachedIDs = [] }
-    func byteSize(for id: String) -> Int64? { sizes[id] }
+    func byteSize(for id: String) -> Int64? {
+        byteSizeCalls += 1
+        return sizes[id]
+    }
+
+    func missingIDs(among ids: [String]) async -> Set<String> {
+        guard accessLevel == .authorized else { return [] }
+        let existing = Set(items.map(\.id))
+        return Set(ids.filter { !existing.contains($0) })
+    }
 
     func setFavorite(_ isFavorite: Bool, forID id: String) async throws {
         favoriteCalls.append((id, isFavorite))
@@ -42,11 +60,14 @@ final class FakePhotoLibrary: PhotoLibraryProviding {
         }
     }
 
-    func delete(ids: [String]) async throws {
+    func delete(ids: [String]) async throws -> [String] {
         deleteCalls.append(ids)
         await beforeDelete?(ids)
         if let deleteError { throw deleteError }
-        items.removeAll { ids.contains($0.id) }
+        let existing = Set(items.map(\.id))
+        let deleted = ids.filter { existing.contains($0) }
+        items.removeAll { deleted.contains($0.id) }
+        return deleted
     }
 }
 

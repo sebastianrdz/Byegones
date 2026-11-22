@@ -16,11 +16,14 @@ class RollawayUITestCase: XCTestCase {
 
     /// `-hasCompletedOnboarding` is read by @AppStorage from the argument domain, so it never
     /// touches the persisted value.
-    func launch(onboardingDone: Bool = true) {
+    /// `resetProgress` passes `-resetProgress YES` (Debug builds): saved progress and the onboarding
+    /// flag are cleared before the app reads them, so every test starts from an empty pile and no
+    /// reviewed items without clicking through Settings. Photos itself is never touched.
+    func launch(onboardingDone: Bool = true, resetProgress: Bool = false) {
         app.launchArguments = [
             "-hasCompletedOnboarding", onboardingDone ? "YES" : "NO",
             "-AppleLanguages", "(en)", "-AppleLocale", "en_US",
-        ]
+        ] + (resetProgress ? ["-resetProgress", "YES"] : [])
         app.launch()
     }
 
@@ -33,13 +36,13 @@ class RollawayUITestCase: XCTestCase {
         return true
     }
 
-    /// Launches past onboarding, grants access when asked, waits for the swipe screen, then puts
-    /// the app in a known state: empty trash pile and no reviewed items (see `resetState`).
+    /// Launches past onboarding with a clean slate (`-resetProgress YES`), grants access when asked,
+    /// and waits for the swipe screen.
     func launchReady() {
-        launch()
+        launch(resetProgress: true)
         grantAccessThroughApp()
         XCTAssertTrue(counter.waitForExistence(timeout: 20), "Swipe screen never appeared.\n\(app.debugDescription)")
-        resetState()
+        XCTAssertEqual(pileCount, 0, "-resetProgress should leave an empty pile")
     }
 
     /// Gets from a fresh launch to the swipe screen whatever the Photos grant state is: already
@@ -57,16 +60,17 @@ class RollawayUITestCase: XCTestCase {
 
     // MARK: Elements
 
+    /// Located by accessibility identifier; the label is still read for the numbers.
     var counter: XCUIElement {
-        app.descendants(matching: .any).matching(NSPredicate(format: "label CONTAINS 'left to review'")).firstMatch
+        app.descendants(matching: .any).matching(identifier: "swipe.counter").firstMatch
     }
 
     var card: XCUIElement {
-        app.descendants(matching: .any).matching(NSPredicate(format: "label BEGINSWITH 'Photo,' OR label BEGINSWITH 'Video,'")).firstMatch
+        app.descendants(matching: .any).matching(identifier: "swipe.card").firstMatch
     }
 
     var trashPill: XCUIElement {
-        app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Trash pile' OR label ENDSWITH ' items'")).firstMatch
+        app.buttons.matching(identifier: "swipe.trashPill").firstMatch
     }
 
     func button(_ label: String) -> XCUIElement { app.buttons[label] }
@@ -186,40 +190,6 @@ class RollawayUITestCase: XCTestCase {
         app.terminate()
         launch()
         XCTAssertTrue(counter.waitForExistence(timeout: 20), "Swipe screen did not come back after relaunch")
-    }
-
-    // MARK: State reset
-
-    /// There is no reset launch argument, so state is reset through the UI: take everything out
-    /// of the trash pile (which marks it reviewed), then "Reset progress" in Settings, which
-    /// returns every reviewed item to the queue. Photos itself is never touched.
-    func resetState() {
-        if trashPill.exists, pileCount > 0 {
-            openTrash()
-            var guardrail = 0
-            while trashCells.count > 0 && guardrail < 200 {
-                let before = trashCells.count
-                trashCells.firstMatch.tap()
-                let predicate = NSPredicate { _, _ in self.trashCells.count < before }
-                _ = XCTWaiter().wait(for: [XCTNSPredicateExpectation(predicate: predicate, object: nil)], timeout: 3)
-                guardrail += 1
-            }
-            closeTrash()
-        }
-        let gear = app.buttons["Settings"]
-        XCTAssertTrue(gear.waitForExistence(timeout: 5))
-        gear.tap()
-        let reset = app.buttons["Reset progress"]
-        XCTAssertTrue(reset.waitForExistence(timeout: 5))
-        reset.tap()
-        let confirm = app.buttons["Reset"]
-        XCTAssertTrue(confirm.waitForExistence(timeout: 5))
-        confirm.tap()
-        app.navigationBars["Settings"].buttons["Done"].tap()
-        // Wait out the sheet dismissal: a swipe synthesized while it is still animating can miss the card.
-        XCTAssertTrue(app.navigationBars["Settings"].waitForNonExistence(timeout: 5))
-        XCTAssertTrue(counter.waitForExistence(timeout: 10))
-        XCTAssertEqual(pileCount, 0)
     }
 
     /// Needs `n` photos in the queue; fails with the fix instead of a confusing downstream error.

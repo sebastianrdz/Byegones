@@ -1,11 +1,22 @@
 import CoreGraphics
 import Foundation
 import Observation
+import os
+
+/// Something the person should be told about that did not come from a button they pressed.
+nonisolated struct SessionNotice: Equatable, Sendable {
+    enum Kind: Sendable { case favoriteFailed, unfavoriteFailed }
+    var kind: Kind
+    /// Changes on every notice, so the same kind twice in a row still reads as new.
+    var serial: Int
+}
 
 @Observable
 final class SwipeSession {
     /// How many items after the current one are kept warm in the image cache.
     static let prefetchDepth = 3
+
+    private static let log = Logger(subsystem: "com.example.photocleaner", category: "session")
 
     // MARK: Observable state
 
@@ -14,7 +25,8 @@ final class SwipeSession {
     private(set) var queue: [MediaItem] = []
     /// Oldest first; `undo()` pops the last.
     private(set) var history: [Decision] = []
-    /// Ordered, oldest first.
+    /// The pile as shown: oldest first, only items Photos returned. Persisted pile IDs that did
+    /// not resolve in the latest fetch are kept on disk (see `unresolvedPendingIDs`), not shown.
     private(set) var pendingTrash: [MediaItem] = []
     private(set) var reviewedIDs: Set<String>
     private(set) var bytesFreed: Int64
@@ -24,12 +36,14 @@ final class SwipeSession {
     /// `true` once a load has completed with read access (distinguishes "loading" from "empty").
     private(set) var hasLoaded = false
     private(set) var isCommitting = false
-    /// Last Photos failure from a fire-and-forget operation (favorite).
+    /// Last Photos failure from a fire-and-forget operation (favorite) or a failed delete.
     private(set) var lastError: (any Error)?
+    /// A favorite write that failed. The view shows it as a toast.
+    private(set) var notice: SessionNotice?
 
     var current: MediaItem? { queue.first }
     var remainingCount: Int { queue.count }
-    var canUndo: Bool { !history.isEmpty }
+    var canUndo: Bool { !history.isEmpty && !isCommitting }
     var pendingTrashBytes: Int64 { pendingTrash.reduce(0) { $0 + ($1.byteSize ?? 0) } }
     /// `false` when no item in the pile has a known size (the size API is unavailable).
     var pendingTrashHasSizes: Bool { pendingTrash.contains { $0.byteSize != nil } }
@@ -45,8 +59,17 @@ final class SwipeSession {
     let library: any PhotoLibraryProviding
     @ObservationIgnored private let store: ProgressStore
 
+    /// Persisted pile IDs that the latest fetch did not return. They stay on disk until Photos
+    /// confirms they are gone (full access only); a short fetch must never shrink the pile.
     @ObservationIgnored private var unresolvedPendingIDs: [String]
     @ObservationIgnored private var sizeCache: [String: Int64] = [:]
+    /// Items whose size lookup came back empty. Cached so the lookup never repeats at drag frequency.
+    @ObservationIgnored private var unknownSizeIDs: Set<String> = []
+    /// The answer to our own authorization request. `authorizationStatus` can briefly keep saying
+    /// "not determined" after the system prompt was answered; until it catches up, the answer wins.
+    @ObservationIgnored private var requestedAccess: LibraryAccess?
+    @ObservationIgnored private var loadedRevision = -1
+    @ObservationIgnored private var noticeSerial = 0
 
     // Photos favorite writes run in order, off the gesture path.
     @ObservationIgnored private var libraryWork: Task<Void, Never>?
@@ -68,49 +91,98 @@ final class SwipeSession {
 
     /// Requests access if it was never asked, then loads.
     func start() async {
-        access = library.accessLevel
+        access = resolvedAccess()
         if access == .notDetermined {
-            access = await library.requestAuthorization()
+            let answer = await library.requestAuthorization()
+            requestedAccess = answer
+            access = answer
         }
         await load()
     }
 
+    private func resolvedAccess() -> LibraryAccess {
+        let reported = library.accessLevel
+        if reported != .notDetermined { requestedAccess = nil }
+        if reported == .notDetermined, let requestedAccess { return requestedAccess }
+        return reported
+    }
+
+    /// Reloads only if something could have changed: never loaded, access changed, or Photos
+    /// reported a library change since the last fetch. Use this on foreground.
+    func reloadIfNeeded() async {
+        if !hasLoaded || resolvedAccess() != access || library.changeRevision != loadedRevision {
+            await load()
+        }
+    }
+
     /// Fetches the library and rebuilds the queue and the trash pile.
-    /// Pending IDs that no longer exist are dropped.
     func load() async {
         guard !isLoading else { return }
         isLoading = true
         defer { isLoading = false }
 
-        access = library.accessLevel
+        access = resolvedAccess()
         guard access.canRead else {
             queue = []
             return
         }
 
+        // Read before fetching, so a change that lands mid-fetch triggers another reload.
+        let revision = library.changeRevision
         let items = await library.fetchItems()
-        totalCount = items.count
-
-        let pendingIDs = hasLoaded ? pendingTrash.map(\.id) : unresolvedPendingIDs
         let byID = Dictionary(items.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
-        let resolvedPending: [MediaItem] = pendingIDs.compactMap { id in
-            guard var item = byID[id] else { return nil }
-            item.byteSize = byteSize(of: item)
-            return item
-        }
-        let pendingSet = Set(resolvedPending.map(\.id))
 
-        pendingTrash = resolvedPending
+        // Pile IDs that did not come back are not dropped just for that: only Photos confirming
+        // (full access) that they no longer exist removes them.
+        let unresolvedNow = pendingCandidates().filter { byID[$0] == nil }
+        var missing = Set<String>()
+        if access == .authorized, !unresolvedNow.isEmpty {
+            missing = await library.missingIDs(among: unresolvedNow)
+        }
+
+        // Sizes for pile items that are not cached yet, read off the main actor in one batch.
+        let needSizes = pendingCandidates().filter { byID[$0] != nil && sizeCache[$0] == nil && !unknownSizeIDs.contains($0) }
+        if !needSizes.isEmpty {
+            let sizes = await library.byteSizes(for: needSizes)
+            for id in needSizes {
+                if let size = sizes[id] { sizeCache[id] = size } else { unknownSizeIDs.insert(id) }
+            }
+        }
+
+        // From here on everything is synchronous, so state read now is state written now.
+        let candidates = pendingCandidates()
+        var resolved: [MediaItem] = []
+        var unresolved: [String] = []
+        for id in candidates {
+            if var item = byID[id] {
+                item.byteSize = sizeCache[id]
+                resolved.append(item)
+            } else if !missing.contains(id) {
+                unresolved.append(id)
+            }
+        }
+        let pruned = candidates.count - resolved.count - unresolved.count
+        totalCount = items.count
+        pendingTrash = resolved
+        unresolvedPendingIDs = unresolved
+
+        let pendingSet = Set(candidates)
         let newQueue = items.filter { !reviewedIDs.contains($0.id) && !pendingSet.contains($0.id) }
         // Avoid churn (and a visible reshuffle) when a foreground reload finds nothing new.
         if newQueue.map(\.id) != queue.map(\.id) { queue = newQueue }
         // Undo survives a reload as long as the decided item still exists.
         history.removeAll { byID[$0.item.id] == nil }
         hasLoaded = true
-        unresolvedPendingIDs = []
+        loadedRevision = revision
 
-        if resolvedPending.count != pendingIDs.count { persist() }
+        if pruned > 0 { persist() }
         refreshPrefetch()
+    }
+
+    /// Every pile ID in order: shown items first, then the ones awaiting confirmation.
+    private func pendingCandidates() -> [String] {
+        var seen = Set<String>()
+        return (pendingTrash.map(\.id) + unresolvedPendingIDs).filter { seen.insert($0).inserted }
     }
 
     // MARK: Decisions
@@ -139,8 +211,9 @@ final class SwipeSession {
     }
 
     /// Reverts the last decision, including the favorite flag in Photos, and makes that item current.
+    /// Ignored while a delete is in flight: the item could be one that Photos is deleting.
     func undo() {
-        guard let decision = history.popLast() else { return }
+        guard !isCommitting, let decision = history.popLast() else { return }
         let item = decision.item
         reviewedIDs.remove(item.id)
         pendingTrash.removeAll { $0.id == item.id }
@@ -153,7 +226,7 @@ final class SwipeSession {
 
     /// Takes an item out of the pile and treats it as kept.
     func untrash(_ id: String) {
-        guard pendingTrash.contains(where: { $0.id == id }) else { return }
+        guard !isCommitting, pendingTrash.contains(where: { $0.id == id }) else { return }
         pendingTrash.removeAll { $0.id == id }
         reviewedIDs.insert(id)
         didMutate()
@@ -161,14 +234,15 @@ final class SwipeSession {
 
     /// Puts an item that was just taken out of the pile back at `index` (undo of `untrash`).
     func restoreToTrash(_ item: MediaItem, at index: Int) {
-        guard !pendingTrash.contains(where: { $0.id == item.id }) else { return }
+        guard !isCommitting, !pendingTrash.contains(where: { $0.id == item.id }) else { return }
         reviewedIDs.remove(item.id)
         pendingTrash.insert(item, at: min(max(0, index), pendingTrash.count))
         didMutate()
     }
 
     /// Deletes the whole pile in one Photos change (one system confirmation).
-    /// The pile and `bytesFreed` change only on success.
+    /// The pile and `bytesFreed` change only on success, and only items Photos actually deleted
+    /// are counted.
     @discardableResult
     func commitTrash() async -> CommitOutcome {
         guard !isCommitting, !pendingTrash.isEmpty else { return .nothingToDelete }
@@ -176,9 +250,10 @@ final class SwipeSession {
         defer { isCommitting = false }
 
         let batch = pendingTrash
-        let ids = Set(batch.map(\.id))
+        let batchIDs = Set(batch.map(\.id))
+        let deletedIDs: [String]
         do {
-            try await library.delete(ids: batch.map(\.id))
+            deletedIDs = try await library.delete(ids: batch.map(\.id))
         } catch PhotoLibraryError.userCancelled {
             return .cancelled
         } catch {
@@ -186,14 +261,17 @@ final class SwipeSession {
             return .failed(error)
         }
 
-        let bytes = batch.reduce(Int64(0)) { $0 + ($1.byteSize ?? 0) }
-        pendingTrash.removeAll { ids.contains($0.id) }
+        // Items that were already gone leave the pile too, but are not counted as cleared.
+        let deleted = Set(deletedIDs).intersection(batchIDs)
+        let bytes = batch.filter { deleted.contains($0.id) }.reduce(Int64(0)) { $0 + ($1.byteSize ?? 0) }
+        pendingTrash.removeAll { batchIDs.contains($0.id) }
         // Deleted items can no longer be restored by undo.
-        history.removeAll { ids.contains($0.item.id) }
+        history.removeAll { batchIDs.contains($0.item.id) }
+        totalCount = max(0, totalCount - deleted.count)
         bytesFreed += bytes
-        totalCount = max(0, totalCount - batch.count)
         didMutate()
-        return .deleted(count: batch.count, bytes: bytes)
+        guard !deleted.isEmpty else { return .nothingToDelete }
+        return .deleted(count: deleted.count, bytes: bytes)
     }
 
     /// Clears the review history so reviewed items return to the queue. The pending pile and
@@ -205,13 +283,22 @@ final class SwipeSession {
         await load()
     }
 
+    func dismissNotice() {
+        notice = nil
+    }
+
     // MARK: Sizes
 
-    /// Cached size lookup for any item (for the current card's badge).
+    /// Cached size lookup for any item (for the current card's badge). Unknown sizes are cached
+    /// too, so `PHAssetResource` is consulted at most once per item.
     func byteSize(of item: MediaItem) -> Int64? {
         if let known = item.byteSize { return known }
         if let cached = sizeCache[item.id] { return cached }
-        guard let size = library.byteSize(for: item.id) else { return nil }
+        if unknownSizeIDs.contains(item.id) { return nil }
+        guard let size = library.byteSize(for: item.id) else {
+            unknownSizeIDs.insert(item.id)
+            return nil
+        }
         sizeCache[item.id] = size
         return size
     }
@@ -242,22 +329,42 @@ final class SwipeSession {
             do {
                 try await library.setFavorite(value, forID: id)
             } catch {
-                lastError = error
+                favoriteWriteFailed(wanted: value, id: id, error: error)
             }
         }
+    }
+
+    private func favoriteWriteFailed(wanted: Bool, id: String, error: any Error) {
+        lastError = error
+        Self.log.error("Favorite write failed: \(error.localizedDescription, privacy: .public)")
+        if wanted {
+            // The star never landed, so this decision is now a plain keep. Undoing it must not
+            // queue a write that tries to remove a favorite that was never added.
+            if let index = history.lastIndex(where: { $0.item.id == id && $0.action == .favorite }) {
+                let old = history[index]
+                history[index] = Decision(item: old.item, action: .keep, wasFavorite: old.wasFavorite)
+            }
+        }
+        noticeSerial += 1
+        notice = SessionNotice(kind: wanted ? .favoriteFailed : .unfavoriteFailed, serial: noticeSerial)
     }
 
     private func persist() {
         dirtySnapshot = ProgressData(
             reviewedIDs: reviewedIDs,
-            pendingTrashIDs: hasLoaded ? pendingTrash.map(\.id) : unresolvedPendingIDs,
+            pendingTrashIDs: pendingTrash.map(\.id) + unresolvedPendingIDs,
             bytesFreed: bytesFreed
         )
         guard saveTask == nil else { return }
         saveTask = Task {
             while let snapshot = dirtySnapshot {
                 dirtySnapshot = nil
-                try? await store.saveInBackground(snapshot)
+                do {
+                    try await store.saveInBackground(snapshot)
+                } catch {
+                    // Not fatal: the next mutation writes the full state again.
+                    Self.log.error("Saving progress failed: \(error.localizedDescription, privacy: .public)")
+                }
             }
             saveTask = nil
         }

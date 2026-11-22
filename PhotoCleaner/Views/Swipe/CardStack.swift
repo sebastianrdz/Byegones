@@ -54,6 +54,7 @@ struct CardStack: View {
         .accessibilityElement(children: isTop ? .ignore : .contain)
         .accessibilityLabel(isTop ? Text(Strings.cardA11y(item: layer.item)) : Text(verbatim: ""))
         .accessibilityHint(Text("swipe.card.a11y.actions"))
+        .accessibilityIdentifier(isTop ? "swipe.card" : "swipe.card.next")
         .accessibilityActions {
             Button("swipe.button.keep.label") { controller.perform(.keep) }
             Button("swipe.button.delete.label") { controller.perform(.trash) }

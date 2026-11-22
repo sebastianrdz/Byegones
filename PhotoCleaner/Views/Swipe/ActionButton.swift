@@ -11,6 +11,7 @@ struct ActionButton: View {
     var isEnabled = true
     /// Screenshot scenes only: draws the control in its just-used state.
     var showsAsUsed = false
+    var identifier: String?
     let action: () -> Void
 
     @ScaledMetric(relativeTo: .body) private var scale = 1.0
@@ -18,6 +19,9 @@ struct ActionButton: View {
     var body: some View {
         Button(action: action) {
             Image(systemName: symbol)
+                // The button's own label names the action. Left visible to accessibility, the
+                // "checkmark" glyph itself makes VoiceOver announce Keep as "selected".
+                .accessibilityHidden(true)
                 .font(.system(size: glyphSize * min(scale, 1.4), weight: .semibold))
                 .foregroundStyle(showsAsUsed ? Color.onUndoFill : color)
                 .frame(width: diameter, height: diameter)
@@ -31,5 +35,6 @@ struct ActionButton: View {
         .opacity(isEnabled ? 1 : 0.35)
         .accessibilityLabel(Text(label))
         .accessibilityHint(Text(hint))
+        .accessibilityIdentifier(identifier ?? "")
     }
 }

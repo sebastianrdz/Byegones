@@ -2116,6 +2116,40 @@
           }
         }
       }
+    },
+    "error.favorite.failed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn't add this to Favorites."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se pudo añadir a Favoritos."
+          }
+        }
+      }
+    },
+    "error.favorite.remove.failed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn't remove this from Favorites."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se pudo quitar de Favoritos."
+          }
+        }
+      }
     }
   },
   "version": "1.0"

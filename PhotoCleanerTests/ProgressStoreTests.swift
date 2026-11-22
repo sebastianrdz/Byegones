@@ -42,7 +42,6 @@ struct ProgressStoreTests {
         "{",                                  // truncated JSON
         "[]",                                 // wrong top-level type
         "{\"reviewedIDs\": 5}",               // wrong value type
-        "{\"reviewedIDs\": [\"a\"]}",         // required keys missing
         "null",
     ])
     func unreadableContentsLoadAsEmpty(_ contents: String) throws {

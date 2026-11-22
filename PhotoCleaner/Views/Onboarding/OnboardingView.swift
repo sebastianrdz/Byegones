@@ -4,8 +4,14 @@ struct OnboardingView: View {
     let session: SwipeSession
     let onFinish: () -> Void
 
-    @State private var page = 0
+    @State private var page: Int
     @State private var isRequesting = false
+
+    init(session: SwipeSession, initialPage: Int = 0, onFinish: @escaping () -> Void) {
+        self.session = session
+        self.onFinish = onFinish
+        _page = State(initialValue: initialPage)
+    }
 
     var body: some View {
         TabView(selection: $page) {

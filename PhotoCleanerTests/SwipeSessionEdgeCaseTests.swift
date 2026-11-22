@@ -241,9 +241,8 @@ struct CommitEdgeCaseTests {
     }
 
     @Test func undoDuringCommitDoesNotLeaveADeletedItemInTheQueue() async {
-        // DEFECT (low severity, not reachable through the UI because the trash sheet is modal):
-        // undo() is not guarded by isCommitting. If it pops a trash decision that is part of the
-        // batch being deleted, the item re-enters the queue and is then deleted from Photos anyway.
+        // undo() is ignored while a delete is in flight; otherwise it could pull an item back into
+        // the queue that Photos is about to delete.
         let f = await Fixture.make()
         f.session.trash()   // "0"
         let gate = Gate()
@@ -257,9 +256,7 @@ struct CommitEdgeCaseTests {
 
         let deleted = Set(f.library.deleteCalls.flatMap { $0 })
         let queued = Set(f.session.queue.map(\.id))
-        withKnownIssue("undo() during an in-flight commit resurrects an item that Photos then deletes") {
-            #expect(deleted.isDisjoint(with: queued))
-        }
+        #expect(deleted.isDisjoint(with: queued))
     }
 
     @Test func undoAfterCommitDoesNotResurrectDeletedItems() async {
@@ -459,7 +456,7 @@ struct LibraryChangeTests {
             func startCaching(ids: [String], targetSize: CGSize) {}
             func stopCaching() {}
             func setFavorite(_ isFavorite: Bool, forID id: String) async throws {}
-            func delete(ids: [String]) async throws {}
+            func delete(ids: [String]) async throws -> [String] { ids }
             func byteSize(for id: String) -> Int64? { nil }
         }
         let library = Asking()
