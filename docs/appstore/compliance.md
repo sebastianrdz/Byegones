@@ -60,7 +60,7 @@ ASC: App Store Connect > Business > Compliance (or Agreements, Tax, and Banking 
 | Individual acting purely for personal, non-commercial reasons (free hobby app, no income, no promotion of a business) | **Not a trader** | No contact details shown; the app is described as from a non-trader and EU consumer-protection rules for traders may not apply. Misdeclaring is a compliance risk. |
 
 Judgment: **unknown; the user must decide.** Notes. Being on a paid developer account does not by itself make someone a trader, but repeated publishing, any monetization now or later, or a company-registered account usually points to trader. If trader and you do not want a home address public, use a business address and a dedicated phone number or email. **Requires attorney review** before choosing "Not a trader".
-Placeholders: `{TRADER_ADDRESS}`, `{TRADER_PHONE}`, `{SUPPORT_EMAIL}`.
+Placeholders: `{TRADER_ADDRESS}`, `{TRADER_PHONE}`, `sebasstian.rdz@gmail.com`.
 
 ## 6. Privacy manifest (`PrivacyInfo.xcprivacy`)
 
@@ -117,9 +117,9 @@ Other keys:
 ## 8. Category and copyright
 
 - Primary: **Photo & Video**. Secondary: **Utilities**. Photo & Video matches the function; Utilities is accurate for storage clean-up. Avoid "Productivity" (weaker fit). 
-- Copyright line (ASC > App Information): `© {YEAR} {DEVELOPER_NAME}`, year of first release, legal name of the account holder. Do not put the app name or a brand that is not the entity.
+- Copyright line (ASC > App Information): `© {YEAR} Sebastian Rodriguez`, year of first release, legal name of the account holder. Do not put the app name or a brand that is not the entity.
 - Support URL: `{SUPPORT_URL}` (must be live at submission, see review-risks.md 1.5). Marketing URL optional.
 
 ## Placeholders to fill
 
-`{AppName}`, `{DEVELOPER_NAME}`, `{SUPPORT_EMAIL}`, `{SUPPORT_URL}`, `{PRIVACY_POLICY_URL}`, `{YEAR}`, `{TRADER_ADDRESS}`, `{TRADER_PHONE}`, and the trader/not-trader decision.
+`Byegones`, `Sebastian Rodriguez`, `sebasstian.rdz@gmail.com`, `{SUPPORT_URL}`, `{PRIVACY_POLICY_URL}`, `{YEAR}`, `{TRADER_ADDRESS}`, `{TRADER_PHONE}`, and the trader/not-trader decision.

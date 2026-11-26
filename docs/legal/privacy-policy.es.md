@@ -1,18 +1,18 @@
 > **BORRADOR — se requiere revisión de un abogado antes de su uso.** Este es un borrador preparado a partir de la especificación de la app. No constituye asesoría legal. Reemplaza todos los marcadores entre llaves antes de publicar.
 
-# Política de privacidad de {AppName}
+# Política de privacidad de Byegones
 
 **Fecha de entrada en vigor:** {EFFECTIVE_DATE}
-**Desarrollador:** {DEVELOPER_NAME}
-**Contacto:** {SUPPORT_EMAIL}
+**Desarrollador:** Sebastian Rodriguez
+**Contacto:** sebasstian.rdz@gmail.com
 
 ## Resumen
 
-{AppName} no recopila, no almacena en nuestros servidores, no transmite, no vende ni comparte ningún dato tuyo. La app no tiene cuentas, ni analíticas, ni publicidad, ni código de terceros. Tus fotos y videos permanecen en tu iPhone.
+Byegones no recopila, no almacena en nuestros servidores, no transmite, no vende ni comparte ningún dato tuyo. La app no tiene cuentas, ni analíticas, ni publicidad, ni código de terceros. Tus fotos y videos permanecen en tu iPhone.
 
 ## A qué accede la app y para qué
 
-- **Tu biblioteca de Fotos (fotos y videos).** {AppName} solicita permiso para leer y modificar tu biblioteca de Fotos. Usa este acceso solo para mostrarte tus elementos uno por uno, mostrar la fecha, el tamaño y la duración de cada uno, marcar elementos como Favoritos cuando tú lo decidas y eliminar los elementos que hayas elegido eliminar. Las eliminaciones solo ocurren después de que las confirmes en el cuadro de confirmación estándar de iOS.
+- **Tu biblioteca de Fotos (fotos y videos).** Byegones solicita permiso para leer y modificar tu biblioteca de Fotos. Usa este acceso solo para mostrarte tus elementos uno por uno, mostrar la fecha, el tamaño y la duración de cada uno, marcar elementos como Favoritos cuando tú lo decidas y eliminar los elementos que hayas elegido eliminar. Las eliminaciones solo ocurren después de que las confirmes en el cuadro de confirmación estándar de iOS.
 - **Acceso limitado.** Puedes darle a la app acceso solo a algunas de tus fotos. La app funciona con lo que selecciones. Puedes cambiarlo en cualquier momento en Ajustes.
 - **Tamaño de archivo.** Para mostrar cuánto espacio ocupa un elemento, la app le pide al sistema el tamaño de su archivo. Esto se queda en tu dispositivo.
 
@@ -43,15 +43,15 @@ La app puede pedirte ocasionalmente que la califiques con el aviso de calificaci
 
 ## Terceros
 
-{AppName} no contiene SDK de terceros, publicidad, analíticas ni rastreo. No vendemos ni compartimos información personal, y la app no te rastrea entre apps o sitios web de otras empresas.
+Byegones no contiene SDK de terceros, publicidad, analíticas ni rastreo. No vendemos ni compartimos información personal, y la app no te rastrea entre apps o sitios web de otras empresas.
 
 ## Sitio web
 
-El sitio web de {AppName} es un sitio estático alojado en Vercel. No usa analíticas, cookies, rastreadores ni fuentes o scripts externos. Como la mayoría de los servicios de alojamiento, Vercel puede conservar registros técnicos estándar del servidor, como la dirección IP y la hora de la solicitud.
+El sitio web de Byegones es un sitio estático alojado en Vercel. No usa analíticas, cookies, rastreadores ni fuentes o scripts externos. Como la mayoría de los servicios de alojamiento, Vercel puede conservar registros técnicos estándar del servidor, como la dirección IP y la hora de la solicitud.
 
 ## Menores de edad
 
-{AppName} no está dirigida a menores y no recopila conscientemente información personal de nadie, incluidos los menores. Como la app no recopila datos, no hay nada que borrar ni divulgar sobre ningún usuario.
+Byegones no está dirigida a menores y no recopila conscientemente información personal de nadie, incluidos los menores. Como la app no recopila datos, no hay nada que borrar ni divulgar sobre ningún usuario.
 
 ## Tus derechos
 
@@ -63,5 +63,5 @@ Si la app cambia de una manera que afecte tu privacidad, actualizaremos esta pol
 
 ## Contacto
 
-{DEVELOPER_NAME}
-Correo electrónico: {SUPPORT_EMAIL}
+Sebastian Rodriguez
+Correo electrónico: sebasstian.rdz@gmail.com

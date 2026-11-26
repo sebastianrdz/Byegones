@@ -1,9 +1,9 @@
 # Notes for App Review (paste into App Store Connect)
 
-> DRAFT: fill `{AppName}` before pasting. Character count is checked in the report.
+> DRAFT: fill `Byegones` before pasting. Character count is checked in the report.
 
 ---
-Thank you for reviewing {AppName}.
+Thank you for reviewing Byegones.
 
 NO LOGIN: There are no accounts, no sign-in, no network calls, no analytics, no ads and no in-app purchases. The app is free and works fully offline.
 

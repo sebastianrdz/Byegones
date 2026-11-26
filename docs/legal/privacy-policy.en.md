@@ -1,18 +1,18 @@
 > **DRAFT — attorney review required before use.** This is a draft prepared from the app specification. It is not legal advice. Replace every placeholder in curly braces before publishing.
 
-# {AppName} Privacy Policy
+# Byegones Privacy Policy
 
 **Effective date:** {EFFECTIVE_DATE}
-**Developer:** {DEVELOPER_NAME}
-**Contact:** {SUPPORT_EMAIL}
+**Developer:** Sebastian Rodriguez
+**Contact:** sebasstian.rdz@gmail.com
 
 ## The short version
 
-{AppName} does not collect, store on our servers, transmit, sell or share any of your data. The app has no accounts, no analytics, no advertising and no third-party code. Your photos and videos stay on your iPhone.
+Byegones does not collect, store on our servers, transmit, sell or share any of your data. The app has no accounts, no analytics, no advertising and no third-party code. Your photos and videos stay on your iPhone.
 
 ## What the app accesses, and why
 
-- **Your Photos library (photos and videos).** {AppName} asks for permission to read and modify your Photos library. It uses this access only to show your items one at a time, display each item's date, size and duration, mark items as Favorite when you choose, and delete items you have chosen to delete. Deletions happen only after you confirm them in the standard iOS confirmation dialog.
+- **Your Photos library (photos and videos).** Byegones asks for permission to read and modify your Photos library. It uses this access only to show your items one at a time, display each item's date, size and duration, mark items as Favorite when you choose, and delete items you have chosen to delete. Deletions happen only after you confirm them in the standard iOS confirmation dialog.
 - **Limited access.** You can give the app access to only some of your photos. The app works with whatever you select. You can change this at any time in Settings.
 - **File size.** To show how much space an item uses, the app asks the system for the item's file size. This stays on your device.
 
@@ -43,15 +43,15 @@ The app may occasionally ask you to rate it using Apple's built-in rating prompt
 
 ## Third parties
 
-{AppName} contains no third-party SDKs, advertising, analytics or tracking. We do not sell or share personal information, and the app does not track you across other companies' apps or websites.
+Byegones contains no third-party SDKs, advertising, analytics or tracking. We do not sell or share personal information, and the app does not track you across other companies' apps or websites.
 
 ## Website
 
-The {AppName} website is a static site hosted by Vercel. It uses no analytics, cookies, trackers, or external fonts or scripts. Like most web hosts, Vercel may keep standard technical server logs, such as IP address and request time.
+The Byegones website is a static site hosted by Vercel. It uses no analytics, cookies, trackers, or external fonts or scripts. Like most web hosts, Vercel may keep standard technical server logs, such as IP address and request time.
 
 ## Children
 
-{AppName} is not directed at children and does not knowingly collect personal information from anyone, including children. Because the app collects no data, there is nothing to delete or disclose about any user.
+Byegones is not directed at children and does not knowingly collect personal information from anyone, including children. Because the app collects no data, there is nothing to delete or disclose about any user.
 
 ## Your rights
 
@@ -63,5 +63,5 @@ If the app changes in a way that affects your privacy, we will update this polic
 
 ## Contact
 
-{DEVELOPER_NAME}
-Email: {SUPPORT_EMAIL}
+Sebastian Rodriguez
+Email: sebasstian.rdz@gmail.com
