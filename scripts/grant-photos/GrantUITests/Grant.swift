@@ -1,7 +1,7 @@
 import XCTest
 final class Grant: XCTestCase {
     func testAllow() {
-        let app = XCUIApplication(bundleIdentifier: ProcessInfo.processInfo.environment["BUNDLE_ID"] ?? "com.example.photocleaner")
+        let app = XCUIApplication(bundleIdentifier: ProcessInfo.processInfo.environment["BUNDLE_ID"] ?? "app.byegones.ios")
         app.launchArguments = ["-screenshotMode", "YES", "-screenshotScene", "swipe"]
         app.launch()
         let sb = XCUIApplication(bundleIdentifier: "com.apple.springboard")

@@ -34,7 +34,7 @@ Make reviewing a camera roll fast enough that people actually do it: one item at
 - Shows per-item file size and running "space to free" total; lifetime "space freed" stat.
 - Languages: English and Spanish (confirmed).
 - Distribution: App Store, free (confirmed). Paid Apple Developer account available.
-- **Undecided:** bundle ID prefix, support email (placeholders `{BUNDLE_PREFIX}`, `{SUPPORT_EMAIL}` until the user provides them).
+- Bundle ID: `app.byegones.ios` (confirmed 2026-11-25). Website: free Vercel subdomain (confirmed). **Undecided:** support email and developer name (placeholders `{{SUPPORT_EMAIL}}`, `{{DEVELOPER_NAME}}` until the user provides them).
 
 ## Brand Commitments
 - Name: **Byegones** (chosen by the user on 2026-11-25, replacing Gate 1's "Rollaway" over domain and category-crowding concerns; see docs/appstore/names.md). EN subtitle: "Swipe away photo clutter". "PhotoCleaner" is only the internal target/module name and never appears in user-facing copy.

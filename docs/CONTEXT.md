@@ -11,7 +11,7 @@ Deletes are **batched**: one "Delete N items" action triggers the single iOS sys
 **Authorities.** Read these before working:
 - `PRODUCT.md` (product truth)
 - `DESIGN.md` (visual system, once WP1 delivers it)
-- `/Users/sebastian/.claude/plans/want-to-create-a-mighty-crescent.md` (the full plan: app spec, screens, work packages)
+- the approved build plan (kept outside the repo; its app spec and screens are reflected in `PRODUCT.md`, `DESIGN.md` and this brief)
 
 **Stack:**
 - SwiftUI, iPhone only, portrait, iOS 17+.

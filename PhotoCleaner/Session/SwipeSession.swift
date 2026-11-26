@@ -16,7 +16,7 @@ final class SwipeSession {
     /// How many items after the current one are kept warm in the image cache.
     static let prefetchDepth = 3
 
-    private static let log = Logger(subsystem: "com.example.photocleaner", category: "session")
+    private static let log = Logger(subsystem: "app.byegones.ios", category: "session")
 
     // MARK: Observable state
 

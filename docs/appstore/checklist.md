@@ -5,7 +5,7 @@ Placeholders: `{TEAM_ID}`, `{BUNDLE_ID}`, `{SUPPORT_EMAIL}`, `{SITE_URL}` (your 
 ## 1. Xcode signing (you)
 - [ ] Xcode > Settings > Accounts: sign in with the paid Apple Developer account.
 - [ ] Select the PhotoCleaner target > Signing & Capabilities: tick Automatically manage signing, choose your Team.
-- [ ] Set the final bundle ID (replace `com.example.photocleaner`; the tests target can follow as `{BUNDLE_ID}.tests`).
+- [x] Bundle ID set to `app.byegones.ios` (tests: `app.byegones.ios.tests`, `app.byegones.ios.uitests`).
 - [ ] Commit the project changes (release.sh requires a clean git tree).
 
 ## 2. App Store Connect: New App (you)
