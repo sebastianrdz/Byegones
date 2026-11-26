@@ -19,5 +19,11 @@ perl -0pi -e 's#<span class="cta cta-soon">Pr.ximamente en el App Store</span>#<
 
 Notes:
 - The site has no external resources. The CSP in `vercel.json` (`default-src 'self'`, no scripts) would block any CDN or analytics added later.
-- Canonical, hreflang, og:url and og:image use root-relative paths because the domain is not decided. Prefix them with the real origin before deploying.
+- Canonical, hreflang, og:url and og:image use the absolute origin `https://byegones.vercel.app`.
 - The privacy pages are rendered from `docs/legal/privacy-policy.*.md` without the DRAFT banner. Legal review of that text is still required.
+
+## Deploys
+
+- Live at https://byegones.vercel.app (Vercel project `sebastianrdzs-projects/byegones`).
+- The project is connected to `github.com/sebastianrdz/Byegones`, with Root Directory `website` and production branch `main`. **Every push to `main` deploys `website/` to production.** Pushes to other branches get preview URLs.
+- Manual deploy, if ever needed, runs from the repo root (not `website/`, because the Root Directory is applied server-side): `npx vercel@latest deploy --prod --scope sebastianrdzs-projects`.
