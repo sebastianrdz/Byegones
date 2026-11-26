@@ -160,13 +160,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rollaway needs access to your photo library to show them to you. Nothing is deleted until you review your pile and confirm."
+            "value": "Byegones needs access to your photo library to show them to you. Nothing is deleted until you review your pile and confirm."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rollaway necesita acceso a tu fototeca para mostrártelas. No se borra nada hasta que revises tu pila y confirmes."
+            "value": "Byegones necesita acceso a tu fototeca para mostrártelas. No se borra nada hasta que revises tu pila y confirmes."
           }
         }
       }
@@ -245,13 +245,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rollaway can't show your photos without access. Turn it on in Settings, then come back."
+            "value": "Byegones can't show your photos without access. Turn it on in Settings, then come back."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rollaway no puede mostrar tus fotos sin acceso. Actívalo en Ajustes y vuelve."
+            "value": "Byegones no puede mostrar tus fotos sin acceso. Actívalo en Ajustes y vuelve."
           }
         }
       }
@@ -279,13 +279,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "You're sharing only some photos with Rollaway."
+            "value": "You're sharing only some photos with Byegones."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Solo compartes algunas fotos con Rollaway."
+            "value": "Solo compartes algunas fotos con Byegones."
           }
         }
       }
@@ -330,13 +330,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "This iPhone doesn't allow Rollaway to use photos. Check Screen Time or your device settings."
+            "value": "This iPhone doesn't allow Byegones to use photos. Check Screen Time or your device settings."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Este iPhone no permite que Rollaway use las fotos. Revisa Tiempo en pantalla o los ajustes del dispositivo."
+            "value": "Este iPhone no permite que Byegones use las fotos. Revisa Tiempo en pantalla o los ajustes del dispositivo."
           }
         }
       }
@@ -1563,13 +1563,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Total cleared with Rollaway: %@"
+            "value": "Total cleared with Byegones: %@"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Total limpiado con Rollaway: %@"
+            "value": "Total limpiado con Byegones: %@"
           }
         }
       }
@@ -1784,13 +1784,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rate Rollaway"
+            "value": "Rate Byegones"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Calificar Rollaway"
+            "value": "Calificar Byegones"
           }
         }
       }

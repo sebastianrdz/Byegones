@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Archive and upload Rollaway to App Store Connect.
+# Archive and upload Byegones to App Store Connect.
 #
 # Usage: scripts/release.sh [--dry-run] [--bump]
 #   --dry-run  run pre-flight checks and print the commands without running them
@@ -18,7 +18,7 @@ cd "$ROOT"
 
 PROJECT="PhotoCleaner.xcodeproj"
 SCHEME="PhotoCleaner"
-ARCHIVE="build/Rollaway.xcarchive"
+ARCHIVE="build/Byegones.xcarchive"
 EXPORT_DIR="build/export"
 EXPORT_TEMPLATE="scripts/ExportOptions.plist"
 EXPORT_GENERATED="build/ExportOptions.generated.plist"

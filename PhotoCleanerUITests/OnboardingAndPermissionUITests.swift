@@ -1,7 +1,7 @@
 import XCTest
 
 @MainActor
-final class OnboardingAndPermissionUITests: RollawayUITestCase {
+final class OnboardingAndPermissionUITests: ByegonesUITestCase {
     /// Forgets the Photos grant so the system prompt shows again. Terminates the app.
     private func resetPhotoAuthorization() {
         app.resetAuthorizationStatus(for: .photos)

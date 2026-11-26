@@ -3,7 +3,7 @@ import XCTest
 /// Interruptibility of the card motion: input during a fly-off is never dropped, and the last card
 /// leaves the screen without taking the empty state down with it.
 @MainActor
-final class MotionUITests: RollawayUITestCase {
+final class MotionUITests: ByegonesUITestCase {
     override func setUp() async throws {
         try await super.setUp()
         launchReady()

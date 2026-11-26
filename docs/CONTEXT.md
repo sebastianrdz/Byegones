@@ -1,4 +1,4 @@
-# Team Context Brief: Rollaway (internal target name: PhotoCleaner)
+# Team Context Brief: Byegones (internal target name: PhotoCleaner)
 
 **What:** A free iPhone app for cleaning up the camera roll, Tinder-style.
 - Swipe left: the item goes to the trash pile.
@@ -38,7 +38,7 @@ Deletes are **batched**: one "Delete N items" action triggers the single iOS sys
 **Constraints:**
 - Stay inside your package's folders. Other agents are working in parallel.
 - No fabricated stats, reviews, or competitor claims.
-- Never write the user's name, email, or other personal info into files. Use placeholders: `{SUPPORT_EMAIL}`, `{BUNDLE_PREFIX}`. The app name is **Rollaway** (user-facing); replace `{AppName}` with it.
+- Never write the user's name, email, or other personal info into files. Use placeholders: `{SUPPORT_EMAIL}`, `{BUNDLE_PREFIX}`. The app name is **Byegones** (user-facing); replace `{AppName}` with it.
 - Don't commit. The orchestrator commits.
 
 **Output contract.** Return:

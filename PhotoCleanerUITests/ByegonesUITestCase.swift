@@ -4,7 +4,7 @@ import XCTest
 /// simulator (seed it with scripts/seed-uitest-photos.sh) and never assume an exact photo count:
 /// they read the counter and assert on deltas.
 @MainActor
-class RollawayUITestCase: XCTestCase {
+class ByegonesUITestCase: XCTestCase {
     let app = XCUIApplication()
     let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
 
@@ -173,7 +173,7 @@ class RollawayUITestCase: XCTestCase {
         return true
     }
 
-    /// Declines the system delete confirmation ("Allow Rollaway to delete 2 photos?" > "Don't Allow").
+    /// Declines the system delete confirmation ("Allow Byegones to delete 2 photos?" > "Don't Allow").
     @discardableResult
     func cancelSystemDelete(timeout: TimeInterval = 10) -> Bool {
         let deadline = Date().addingTimeInterval(timeout)

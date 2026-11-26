@@ -1,7 +1,7 @@
 import XCTest
 
 @MainActor
-final class SwipeUITests: RollawayUITestCase {
+final class SwipeUITests: ByegonesUITestCase {
     override func setUp() async throws {
         try await super.setUp()
         launchReady()

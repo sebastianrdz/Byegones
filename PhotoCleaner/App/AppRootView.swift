@@ -76,7 +76,7 @@ final class BackgroundFlush {
     func run(_ work: @escaping () async -> Void) {
         let ticket = Ticket()
         // UIKit calls the expiration handler on the main thread.
-        ticket.identifier = UIApplication.shared.beginBackgroundTask(withName: "Rollaway.flushProgress") {
+        ticket.identifier = UIApplication.shared.beginBackgroundTask(withName: "Byegones.flushProgress") {
             ticket.end()
         }
         Task {

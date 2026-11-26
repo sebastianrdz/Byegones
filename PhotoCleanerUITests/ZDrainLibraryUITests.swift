@@ -1,12 +1,12 @@
 import XCTest
 
 /// Opt-in: deletes EVERY photo in the simulator library, so it only runs with
-/// `TEST_RUNNER_ROLLAWAY_DRAIN=1` and must be followed by scripts/seed-uitest-photos.sh.
+/// `TEST_RUNNER_BYEGONES_DRAIN=1` and must be followed by scripts/seed-uitest-photos.sh.
 /// Covers the path "last card decided -> All caught up -> review pile -> delete -> celebration (Done)".
 @MainActor
-final class ZDrainLibraryUITests: RollawayUITestCase {
+final class ZDrainLibraryUITests: ByegonesUITestCase {
     func testTrashingTheWholeLibraryEndsInAllCaughtUpThenCelebrationWithDone() throws {
-        try XCTSkipUnless(ProcessInfo.processInfo.environment["ROLLAWAY_DRAIN"] == "1", "Opt-in: set TEST_RUNNER_ROLLAWAY_DRAIN=1")
+        try XCTSkipUnless(ProcessInfo.processInfo.environment["BYEGONES_DRAIN"] == "1", "Opt-in: set TEST_RUNNER_BYEGONES_DRAIN=1")
         launchReady()
         let total = remaining
         XCTAssertLessThan(total, 120, "Refusing to drain a large library")

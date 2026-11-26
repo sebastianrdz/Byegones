@@ -1,4 +1,28 @@
-# App name candidates (Gate 1)
+# App name candidates
+
+## Final decision (2026-11-25): **Byegones**, subtitle "Swipe away photo clutter"
+
+The user asked for a second look at Rollaway. Re-screening found no same-name App Store app and no live class 9 mark, but rollaway.app and getrollaway.com are registered by someone else (not serving content), "Roll" names crowd the category (CleanRoll, SwipeRol, TidyRoll), and "rollaway" is a generic word (beds), which makes a weak mark.
+
+Second-round screening (WebSearch `site:apps.apple.com`, Vercel domain registry lookup, 2026-11-25):
+
+| Name | Result |
+|---|---|
+| **Byegones** (chosen) | No same-name app; nearest ByePhotos, ByeByeBytes. byegones.app, byegones.photos, byegonesapp.com all available. |
+| Shoo | No same-name app (shoe-shopping noise only). shoo.app and shooapp.com taken; shoo.photos available. |
+| Fewer | No same-name app. fewer.app taken; fewerphotos.com available. |
+| Ligero | No exact app (Memo Ligero, Metro Ligero). ligero.photos available. |
+| Kept | Rejected: "Kept: AI Photo Journal & Diary" exists. |
+| Sifty / Siftly | Rejected: both are swipe camera-roll cleaners. |
+| Adios | Rejected: "Adios" app deletes photos, contacts and events. |
+| Roomy | Rejected: several apps named Roomy. |
+| Vamoose | Rejected: "Vamoose - Family Safety Plan" exists; "Vamoos" travel app. |
+
+Still a screening, not proof: reserve the name in App Store Connect (it rejects taken names) and run a USPTO/EUIPO class 9 and 42 clearance search before launch.
+
+---
+
+## Gate 1 shortlist (2026-11-21, superseded)
 
 Constraints: name <= 30 chars, subtitle <= 30 chars, no third-party trademarks (no "Tinder"), must not contain "PhotoCleaner" (working name only).
 

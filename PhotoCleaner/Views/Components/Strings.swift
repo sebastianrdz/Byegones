@@ -73,7 +73,7 @@ enum Strings {
 
     static func lifetime(bytes: Int64) -> String {
         let size = ByteFormat.string(bytes)
-        return String(localized: "celebration.lifetime", defaultValue: "Total cleared with Rollaway: \(size)")
+        return String(localized: "celebration.lifetime", defaultValue: "Total cleared with Byegones: \(size)")
     }
 
     static func version(_ marketing: String, _ build: String) -> String {

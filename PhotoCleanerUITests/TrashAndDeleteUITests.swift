@@ -1,7 +1,7 @@
 import XCTest
 
 @MainActor
-final class TrashAndDeleteUITests: RollawayUITestCase {
+final class TrashAndDeleteUITests: ByegonesUITestCase {
     override func setUp() async throws {
         try await super.setUp()
         launchReady()
@@ -61,7 +61,7 @@ final class TrashAndDeleteUITests: RollawayUITestCase {
         delete.tap()
 
         guard let confirm = systemDeleteButton() else { return XCTFail("No system confirmation appeared") }
-        // The alert's own text names the count ("Allow Rollaway to delete 2 photos?"); the button is just "Delete".
+        // The alert's own text names the count ("Allow Byegones to delete 2 photos?"); the button is just "Delete".
         let alerts = [springboard, app].flatMap { $0.alerts.allElementsBoundByIndex }
         let alertText = alerts.flatMap { [$0.label] + $0.staticTexts.allElementsBoundByIndex.map(\.label) }.joined(separator: " | ")
         XCTAssertTrue(alertText.contains("delete 2 photo"), "The rescued photo must not be in the batch; the alert says: \(alertText)")

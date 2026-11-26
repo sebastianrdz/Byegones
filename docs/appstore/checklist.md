@@ -1,4 +1,4 @@
-# Rollaway: App Store submission checklist
+# Byegones: App Store submission checklist
 
 Placeholders: `{TEAM_ID}`, `{BUNDLE_ID}`, `{SUPPORT_EMAIL}`, `{SITE_URL}` (your Vercel site). Steps marked (you) need your Apple account.
 
@@ -9,7 +9,7 @@ Placeholders: `{TEAM_ID}`, `{BUNDLE_ID}`, `{SUPPORT_EMAIL}`, `{SITE_URL}` (your 
 - [ ] Commit the project changes (release.sh requires a clean git tree).
 
 ## 2. App Store Connect: New App (you)
-- [ ] My Apps > + > New App. Platform iOS, name `Rollaway`, primary language English (U.S.), bundle ID `{BUNDLE_ID}` (appears after step 1 and a first Xcode signing build), SKU of your choice.
+- [ ] My Apps > + > New App. Platform iOS, name `Byegones`, primary language English (U.S.), bundle ID `{BUNDLE_ID}` (appears after step 1 and a first Xcode signing build), SKU of your choice.
 - [ ] App Information > Localizable Information > add language **Spanish (Mexico)**.
 
 ## 3. Listing fields (paste from the repo)

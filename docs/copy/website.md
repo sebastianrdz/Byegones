@@ -1,6 +1,6 @@
 # Website copy (EN / ES)
 
-App name: **Rollaway** (Gate 1). Placeholders: `{SUPPORT_EMAIL}`, `{APP_STORE_URL}` (the App Store link, filled after the app is live; the built site uses `{{SUPPORT_EMAIL}}` and `{{APP_STORE_URL}}`). Until then the CTA reads "Coming soon to the App Store". The built pages are in `website/` (generated from this copy; the in-page hero sub is the 20-word version below). One CTA per page: the App Store badge. No ratings, download counts, testimonials or competitor claims. ES lives at `/es/`. Pages: landing, support (privacy policy is owned by `docs/legal/`).
+App name: **Byegones** (Gate 1). Placeholders: `{SUPPORT_EMAIL}`, `{APP_STORE_URL}` (the App Store link, filled after the app is live; the built site uses `{{SUPPORT_EMAIL}}` and `{{APP_STORE_URL}}`). Until then the CTA reads "Coming soon to the App Store". The built pages are in `website/` (generated from this copy; the in-page hero sub is the 20-word version below). One CTA per page: the App Store badge. No ratings, download counts, testimonials or competitor claims. ES lives at `/es/`. Pages: landing, support (privacy policy is owned by `docs/legal/`).
 
 ---
 
@@ -30,7 +30,7 @@ App name: **Rollaway** (Gate 1). Placeholders: `{SUPPORT_EMAIL}`, `{APP_STORE_UR
 
 **Privacy section**
 - Title: Your photos never leave your iPhone
-- Body: No account, no tracking, no analytics, no data collected. Rollaway has no servers to send your photos to. Works with limited access too, so you can share just some photos.
+- Body: No account, no tracking, no analytics, no data collected. Byegones has no servers to send your photos to. Works with limited access too, so you can share just some photos.
 
 **Free section (optional, one line)**
 - Free, with no in-app purchases and no subscriptions.
@@ -51,7 +51,7 @@ App name: **Rollaway** (Gate 1). Placeholders: `{SUPPORT_EMAIL}`, `{APP_STORE_UR
 
 **FAQ**
 
-1. **Is Rollaway really free?**
+1. **Is Byegones really free?**
    Yes. There are no in-app purchases, no subscriptions and no ads.
 2. **I deleted photos but my storage didn't go down. Why?**
    iOS keeps deleted photos and videos in the Recently Deleted album for 30 days, and the space is only fully freed when that album is emptied. To get it back right away, open Photos > Albums > Recently Deleted > Select > Delete All.
@@ -60,7 +60,7 @@ App name: **Rollaway** (Gate 1). Placeholders: `{SUPPORT_EMAIL}`, `{APP_STORE_UR
 4. **How do I reset my progress?**
    Open Settings (the gear on the main screen) > Reset progress > Reset. Photos you've already reviewed will show up again for review. Your trash pile and your total cleared are kept, and nothing is deleted from your library.
 5. **I only shared some photos. Can I change that?**
-   Yes. When you share a limited selection, Rollaway shows a banner with a Change selection button. You can also change it in iPhone Settings > Rollaway > Photos.
+   Yes. When you share a limited selection, Byegones shows a banner with a Change selection button. You can also change it in iPhone Settings > Byegones > Photos.
 6. **What data do you collect?**
    None. There is no account, no tracking and no analytics, and your photos and videos stay on your iPhone. See our Privacy Policy for details.
 7. **Some photos take a moment to appear. What's going on?**
@@ -76,8 +76,8 @@ App name: **Rollaway** (Gate 1). Placeholders: `{SUPPORT_EMAIL}`, `{APP_STORE_UR
 
 | Page | Title (<= 60) | Description (<= 160) |
 |---|---|---|
-| Landing | Rollaway: Swipe Away Photo Clutter | Clean up your camera roll in minutes. Swipe left to delete, right to keep, up to favorite. Free, private, no account. Photos never leave your iPhone. |
-| Support | Rollaway Support: Help and FAQ | Answers about Rollaway: where deleted photos go, how to get storage back, resetting progress, limited access, and how to contact us. |
+| Landing | Byegones: Swipe Away Photo Clutter | Clean up your camera roll in minutes. Swipe left to delete, right to keep, up to favorite. Free, private, no account. Photos never leave your iPhone. |
+| Support | Byegones Support: Help and FAQ | Answers about Byegones: where deleted photos go, how to get storage back, resetting progress, limited access, and how to contact us. |
 
 ---
 
@@ -107,7 +107,7 @@ App name: **Rollaway** (Gate 1). Placeholders: `{SUPPORT_EMAIL}`, `{APP_STORE_UR
 
 **Privacidad**
 - Título: Tus fotos nunca salen de tu iPhone
-- Texto: Sin cuenta, sin rastreo, sin analíticas y sin recopilar datos. Rollaway no tiene servidores a los que enviar tus fotos. También funciona con acceso limitado, para que compartas solo algunas fotos.
+- Texto: Sin cuenta, sin rastreo, sin analíticas y sin recopilar datos. Byegones no tiene servidores a los que enviar tus fotos. También funciona con acceso limitado, para que compartas solo algunas fotos.
 
 **Gratis (una línea, opcional)**
 - Gratis, sin compras dentro de la app ni suscripciones.
@@ -128,7 +128,7 @@ App name: **Rollaway** (Gate 1). Placeholders: `{SUPPORT_EMAIL}`, `{APP_STORE_UR
 
 **Preguntas frecuentes**
 
-1. **¿Rollaway es gratis de verdad?**
+1. **¿Byegones es gratis de verdad?**
    Sí. No hay compras dentro de la app, ni suscripciones, ni anuncios.
 2. **Borré fotos pero mi almacenamiento no bajó. ¿Por qué?**
    iOS guarda las fotos y videos borrados 30 días en el álbum Eliminados recientemente, y el espacio solo se libera por completo cuando vacías ese álbum. Para recuperarlo ya, abre Fotos > Álbumes > Eliminados recientemente > Seleccionar > Eliminar todo.
@@ -137,7 +137,7 @@ App name: **Rollaway** (Gate 1). Placeholders: `{SUPPORT_EMAIL}`, `{APP_STORE_UR
 4. **¿Cómo reinicio mi progreso?**
    Abre Ajustes (el engranaje de la pantalla principal) > Reiniciar progreso > Reiniciar. Las fotos que ya revisaste volverán a aparecer para revisarlas. Tu pila de borrado y tu total limpiado se conservan, y no se borra nada de tu biblioteca.
 5. **Solo compartí algunas fotos. ¿Puedo cambiarlo?**
-   Sí. Si compartes una selección limitada, Rollaway muestra un aviso con el botón Cambiar selección. También puedes cambiarlo en Ajustes del iPhone > Rollaway > Fotos.
+   Sí. Si compartes una selección limitada, Byegones muestra un aviso con el botón Cambiar selección. También puedes cambiarlo en Ajustes del iPhone > Byegones > Fotos.
 6. **¿Qué datos recopilan?**
    Ninguno. No hay cuenta, ni rastreo, ni analíticas, y tus fotos y videos se quedan en tu iPhone. Consulta nuestra Política de privacidad para más detalles.
 7. **Algunas fotos tardan en aparecer. ¿Qué pasa?**
@@ -153,12 +153,12 @@ App name: **Rollaway** (Gate 1). Placeholders: `{SUPPORT_EMAIL}`, `{APP_STORE_UR
 
 | Página | Título (<= 60) | Descripción (<= 160) |
 |---|---|---|
-| Inicio | Rollaway: Limpia tu galería deslizando | Limpia tu carrete en minutos: desliza a la izquierda para borrar, a la derecha para guardar. Gratis, privado y sin cuenta. Tus fotos no salen de tu iPhone. |
-| Soporte | Soporte de Rollaway: ayuda y preguntas | Respuestas sobre Rollaway: dónde van las fotos borradas, cómo recuperar espacio, reiniciar progreso, acceso limitado y contacto. |
+| Inicio | Byegones: Limpia tu galería deslizando | Limpia tu carrete en minutos: desliza a la izquierda para borrar, a la derecha para guardar. Gratis, privado y sin cuenta. Tus fotos no salen de tu iPhone. |
+| Soporte | Soporte de Byegones: ayuda y preguntas | Respuestas sobre Byegones: dónde van las fotos borradas, cómo recuperar espacio, reiniciar progreso, acceso limitado y contacto. |
 
 ---
 
-## Character counts (python `len()`; second figure = `Rollaway` replaced by a 30-char name, worst case)
+## Character counts (python `len()`; second figure = `Byegones` replaced by a 30-char name, worst case)
 
 | Field | Count | Worst case | Limit | Result |
 |---|---|---|---|---|

@@ -1,9 +1,9 @@
 # App Store listing (EN)
 
-App name: **Rollaway** (chosen at Gate 1, subtitle A). EN is the primary locale; ES targets Spanish (Mexico), reusable for Spanish (Spain).
+App name: **Byegones** (chosen at Gate 1, subtitle A). EN is the primary locale; ES targets Spanish (Mexico), reusable for Spanish (Spain).
 
 ## Name
-`Rollaway` (8 chars; see `names.md`)
+`Byegones` (8 chars; see `names.md`)
 
 ## Subtitle options (<= 30)
 - A. `Swipe away photo clutter` (24)
@@ -21,7 +21,7 @@ Clean up your camera roll in minutes. Swipe left to delete, right to keep, up to
 ```text
 Your camera roll, one swipe at a time.
 
-Rollaway turns photo cleanup into a quick game: swipe left to delete, swipe right to keep, swipe up to favorite. Free, no account, and your photos never leave your iPhone.
+Byegones turns photo cleanup into a quick game: swipe left to delete, swipe right to keep, swipe up to favorite. Free, no account, and your photos never leave your iPhone.
 
 SWIPE. DECIDE. DONE.
 - Newest photos and videos first, one at a time, full screen
@@ -43,8 +43,8 @@ MADE FOR MISTAKES
 PRIVATE BY DESIGN
 - No account, no sign-up, no ads
 - No tracking, no analytics, no data collected
-- Your photos and videos stay on your iPhone. Rollaway has no servers to send them to.
-- Works with limited access too: share only some photos and Rollaway cleans just those.
+- Your photos and videos stay on your iPhone. Byegones has no servers to send them to.
+- Works with limited access too: share only some photos and Byegones cleans just those.
 
 HOW IT WORKS
 1. Allow access to your photos.
@@ -53,7 +53,7 @@ HOW IT WORKS
 4. Done. Your items move to the Recently Deleted album in Photos.
 
 GOOD TO KNOW: GETTING THE SPACE BACK
-When you delete photos on iPhone, iOS keeps them in Recently Deleted for 30 days. Storage is fully freed once that album is emptied. To get the space back right away, open Photos > Albums > Recently Deleted > Select > Delete All. Rollaway reminds you after every cleanup.
+When you delete photos on iPhone, iOS keeps them in Recently Deleted for 30 days. Storage is fully freed once that album is emptied. To get the space back right away, open Photos > Albums > Recently Deleted > Select > Delete All. Byegones reminds you after every cleanup.
 
 FREE, FOR REAL
 No in-app purchases, no subscriptions, no trials.
@@ -67,18 +67,18 @@ cleaner,storage,camera,gallery,videos,screenshots,declutter,tidy,organize,trash,
 
 Strategy: name and subtitle are already indexed by Apple, so none of their words are repeated (checked below). Singular/plural pairs are not both listed. No competitor names, no third-party trademarks. Roughly 3 characters are left unused; tune after launch data exists. "Camera roll" intent is covered by `camera` plus the word `roll` inside the name.
 
-**Overlap check** (keywords vs name `Rollaway` and all three subtitle options):
+**Overlap check** (keywords vs name `Byegones` and all three subtitle options):
 ```text
 keywords: cleaner, storage, camera, gallery, videos, screenshots, declutter, tidy, organize, trash, favorites, private
-name+subtitle words: away, clutter, delete, free, keep, one, or, photo, rollaway, space, swipe, to, up
+name+subtitle words: away, clutter, delete, free, keep, one, or, photo, byegones, space, swipe, to, up
 intersection: (none)
 duplicates within keywords: (none)
 spaces inside keyword string: none
 ```
-Name is final (Rollaway); re-check only if it changes.
+Name is final (Byegones); re-check only if it changes.
 
 ## What's New (1.0)
-Welcome to Rollaway! Swipe through your photos and videos, build a trash pile, and delete it all in one go. Undo is always one tap away. Free, private, no account.
+Welcome to Byegones! Swipe through your photos and videos, build a trash pile, and delete it all in one go. Undo is always one tap away. Free, private, no account.
 
 (163 chars)
 
@@ -101,7 +101,7 @@ Welcome to Rollaway! Swipe through your photos and videos, build a trash pile, a
 | Subtitle option B | 23 | 30 | OK |
 | Subtitle option C | 24 | 30 | OK |
 | Promotional text | 147 | 170 | OK |
-| Description (with Rollaway) | 1852 | 4000 | OK |
+| Description (with Byegones) | 1852 | 4000 | OK |
 | Description (name replaced by 30 chars, worst case) | 1940 | 4000 | OK |
 | Keywords | 97 | 100 | OK |
 | What's New 1.0 | 163 | 4000 | OK |
