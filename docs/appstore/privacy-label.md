@@ -9,7 +9,7 @@
 | Do you or your third-party partners collect data from this app? | **No, we do not collect data from this app** |
 | Resulting label shown on the App Store | **Data Not Collected** |
 | Tracking (ATT) | None. Do not add `NSUserTrackingUsageDescription`. |
-| Privacy Policy URL | `{PRIVACY_POLICY_URL}` (hosts the content of `docs/legal/privacy-policy.en.md`; add the ES version as localized) |
+| Privacy Policy URL | `https://byegones.vercel.app/privacy` (hosts the content of `docs/legal/privacy-policy.en.md`; add the ES version as localized) |
 | User Privacy Choices URL | Leave blank (optional) |
 
 Apple's definition: "collect" means transmitting data off the device in a way that lets you and/or your third-party partners access it for longer than needed to service the request in real time. Data processed only on the device and not sent off it is not "collected." The app makes no network calls and has no SDKs, so nothing is transmitted.

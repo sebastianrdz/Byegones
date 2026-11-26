@@ -1,6 +1,6 @@
 # Byegones: App Store submission checklist
 
-Placeholders: `{TEAM_ID}`, `{BUNDLE_ID}`, `{SUPPORT_EMAIL}`, `{SITE_URL}` (your Vercel site). Steps marked (you) need your Apple account.
+Placeholders: `{TEAM_ID}`, `{BUNDLE_ID}`, `{SUPPORT_EMAIL}`, `https://byegones.vercel.app` (your Vercel site). Steps marked (you) need your Apple account.
 
 ## 1. Xcode signing (you)
 - [ ] Xcode > Settings > Accounts: sign in with the paid Apple Developer account.
@@ -16,7 +16,7 @@ Placeholders: `{TEAM_ID}`, `{BUNDLE_ID}`, `{SUPPORT_EMAIL}`, `{SITE_URL}` (your 
 - [ ] English: `docs/appstore/listing.en.md` (subtitle A, promotional text, description, keywords, What's New).
 - [ ] Spanish (Mexico): `docs/appstore/listing.es.md`.
 - [ ] Screenshots: run `scripts/screenshots.sh` then `scripts/frame-screenshots.sh`. Upload `marketing/screenshots/en/1..6.png` and `marketing/screenshots/es/1..6.png` to the 6.9" iPhone slot of each locale (1320x2868).
-- [ ] Privacy Policy URL: `{SITE_URL}/privacy.html`. Support URL: `{SITE_URL}/support.html`. (Confirm the pages are deployed first.)
+- [ ] Privacy Policy URL: `https://byegones.vercel.app/privacy`. Support URL: `https://byegones.vercel.app/support`. (Confirm the pages are deployed first.)
 - [ ] Copyright line and contact details for App Review.
 
 ## 4. Policy and compliance answers

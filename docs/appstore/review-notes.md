@@ -26,5 +26,5 @@ FILE SIZE: Item size shown on cards is read from the asset's PhotoKit resource m
 
 REVIEW PROMPT: After the first cleanup of 100 MB or more, the app may call the system SKStoreReviewController rating prompt once the cleanup completes. It is never forced.
 
-Support: {SUPPORT_URL}  Privacy: {PRIVACY_POLICY_URL}
+Support: https://byegones.vercel.app/support  Privacy: https://byegones.vercel.app/privacy
 ---

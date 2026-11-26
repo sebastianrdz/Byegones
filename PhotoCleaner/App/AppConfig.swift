@@ -2,7 +2,7 @@ import Foundation
 
 /// Links that depend on decisions made later. Replace the placeholders in one place.
 enum AppLinks {
-    static let siteDomain = "{{SITE_DOMAIN}}"
+    static let siteDomain = "byegones.vercel.app"
     static let appStoreID = "{{APP_STORE_ID}}"
 
     // The host is percent-encoded so the unreplaced placeholder still forms a valid URL.

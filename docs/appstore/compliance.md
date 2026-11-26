@@ -118,8 +118,8 @@ Other keys:
 
 - Primary: **Photo & Video**. Secondary: **Utilities**. Photo & Video matches the function; Utilities is accurate for storage clean-up. Avoid "Productivity" (weaker fit). 
 - Copyright line (ASC > App Information): `© {YEAR} Sebastian Rodriguez`, year of first release, legal name of the account holder. Do not put the app name or a brand that is not the entity.
-- Support URL: `{SUPPORT_URL}` (must be live at submission, see review-risks.md 1.5). Marketing URL optional.
+- Support URL: `https://byegones.vercel.app/support` (must be live at submission, see review-risks.md 1.5). Marketing URL optional.
 
 ## Placeholders to fill
 
-`Byegones`, `Sebastian Rodriguez`, `sebasstian.rdz@gmail.com`, `{SUPPORT_URL}`, `{PRIVACY_POLICY_URL}`, `{YEAR}`, `{TRADER_ADDRESS}`, `{TRADER_PHONE}`, and the trader/not-trader decision.
+`Byegones`, `Sebastian Rodriguez`, `sebasstian.rdz@gmail.com`, `https://byegones.vercel.app/support`, `https://byegones.vercel.app/privacy`, `{YEAR}`, `{TRADER_ADDRESS}`, `{TRADER_PHONE}`, and the trader/not-trader decision.
